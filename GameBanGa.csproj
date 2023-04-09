@@ -52,6 +52,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="PIece.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -65,6 +68,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -78,6 +82,81 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\a2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\a3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\b1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\b2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\b3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\boss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bossRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bullet.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chickenGreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chickenParachute.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chickenParachuteRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\chickenRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\d_heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dead.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\egg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\egg_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eggBreak.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eggBreak_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\give.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lose.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ship.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
