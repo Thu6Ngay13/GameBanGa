@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GameBanGa
@@ -22,17 +17,17 @@ namespace GameBanGa
 
         private void initial()
         {
-            rocket = new Piece(100, 100);
+            rocket = new Piece(50, 50);
             rocket.Left = this.Width / 2 - rocket.Width / 2;
             rocket.Top = this.Height - rocket.Height;
             rocket.Image = Properties.Resources.ship;
-
             this.Controls.Add(rocket);
         }
 
         private void tm_Bullets_Tick(object sender, EventArgs e)
         {
-
+            foreach(Piece bullet in bullets)
+                bullet.Top -= 10;
         }
 
         private void tm_Chickens_Tick(object sender, EventArgs e)
