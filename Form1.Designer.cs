@@ -46,6 +46,8 @@
             // 
             // tm_Bullets
             // 
+            this.tm_Bullets.Enabled = true;
+            this.tm_Bullets.Interval = 10;
             this.tm_Bullets.Tick += new System.EventHandler(this.tm_Bullets_Tick);
             // 
             // tm_Chickens
@@ -60,10 +62,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(478, 649);
             this.Controls.Add(this.lblScore);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -63,16 +63,6 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _2 {
-            get {
-                object obj = ResourceManager.GetObject("_2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap a2 {
             get {
                 object obj = ResourceManager.GetObject("a2", resourceCulture);
@@ -123,39 +113,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap background {
+        internal static System.Drawing.Bitmap bulletPremium {
             get {
-                object obj = ResourceManager.GetObject("background", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap boss {
-            get {
-                object obj = ResourceManager.GetObject("boss", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap bossRed {
-            get {
-                object obj = ResourceManager.GetObject("bossRed", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap bullet {
-            get {
-                object obj = ResourceManager.GetObject("bullet", resourceCulture);
+                object obj = ResourceManager.GetObject("bulletPremium", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +163,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap d_heart {
+        internal static System.Drawing.Bitmap chickenUFO {
             get {
-                object obj = ResourceManager.GetObject("d_heart", resourceCulture);
+                object obj = ResourceManager.GetObject("chickenUFO", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +183,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap egg {
+        internal static System.Drawing.Bitmap eggRed {
             get {
-                object obj = ResourceManager.GetObject("egg", resourceCulture);
+                object obj = ResourceManager.GetObject("eggRed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +193,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap egg_1 {
+        internal static System.Drawing.Bitmap eggRedBreak {
             get {
-                object obj = ResourceManager.GetObject("egg_1", resourceCulture);
+                object obj = ResourceManager.GetObject("eggRedBreak", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +203,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap eggBreak {
+        internal static System.Drawing.Bitmap eggWhite {
             get {
-                object obj = ResourceManager.GetObject("eggBreak", resourceCulture);
+                object obj = ResourceManager.GetObject("eggWhite", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,9 +213,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap eggBreak_1 {
+        internal static System.Drawing.Bitmap eggWhiteBreak {
             get {
-                object obj = ResourceManager.GetObject("eggBreak_1", resourceCulture);
+                object obj = ResourceManager.GetObject("eggWhiteBreak", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +223,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap give {
+        internal static System.Drawing.Bitmap heartDead {
             get {
-                object obj = ResourceManager.GetObject("give", resourceCulture);
+                object obj = ResourceManager.GetObject("heartDead", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +233,9 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap heart {
+        internal static System.Drawing.Bitmap heartLive {
             get {
-                object obj = ResourceManager.GetObject("heart", resourceCulture);
+                object obj = ResourceManager.GetObject("heartLive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -296,6 +256,16 @@ namespace GameBanGa.Properties {
         internal static System.Drawing.Bitmap ship {
             get {
                 object obj = ResourceManager.GetObject("ship", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap temp {
+            get {
+                object obj = ResourceManager.GetObject("temp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

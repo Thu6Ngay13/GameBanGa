@@ -84,76 +84,51 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\a2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\a3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\b1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\b2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\b3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\boss.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bossRed.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bullet.bmp" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\bulletPremium.png" />
     <None Include="Resources\chickenGreen.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\chickenParachute.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\chickenParachuteRed.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\chickenRed.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\d_heart.png" />
+    <None Include="Resources\chickenUFO.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dead.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\egg.png" />
+    <None Include="Resources\eggRed.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\egg_1.png" />
+    <None Include="Resources\eggRedBreak.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\eggBreak.png" />
+    <None Include="Resources\eggWhite.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\eggBreak_1.png" />
+    <None Include="Resources\eggWhiteBreak.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\give.png" />
+    <None Include="Resources\heartDead.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\heart.png" />
+    <None Include="Resources\heartLive.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\lose.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ship.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\temp.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\win.png" />
