@@ -10,6 +10,8 @@ namespace GameBanGa
 {
     public class Piece : PictureBox
     {
+        public int eggSpeed = 5;
+        public int eggLandCount = 0;
         public Piece(int width, int height)
         {
             Width = width;

@@ -52,10 +52,14 @@
             // 
             // tm_Chickens
             // 
+            this.tm_Chickens.Enabled = true;
+            this.tm_Chickens.Interval = 10;
             this.tm_Chickens.Tick += new System.EventHandler(this.tm_Chickens_Tick);
             // 
             // tm_Eggs
             // 
+            this.tm_Eggs.Enabled = true;
+            this.tm_Eggs.Interval = 10;
             this.tm_Eggs.Tick += new System.EventHandler(this.tm_Eggs_Tick);
             // 
             // Form1
