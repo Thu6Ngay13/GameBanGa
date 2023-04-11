@@ -46,7 +46,7 @@ namespace GameBanGa
             rocket = new Piece(50, 50);
             rocket.Left = this.Width / 2 - rocket.Width / 2;
             rocket.Top = this.Height - rocket.Height;
-            rocket.Image = Properties.Resources.ship;
+            rocket.Image = Properties.Resources.shipLive;
             this.Controls.Add(rocket);
 
             divideImageIntoFrames(chichkenImage, chickenFrames, 10);
@@ -84,28 +84,29 @@ namespace GameBanGa
             Random rand = new Random();
             if (rand.Next(200) == 5) launchRandomEgg();
             if (eggs.Count == 0) return;
-            foreach(Piece egg in eggs)
+            for(int i = 0; i < eggs.Count; ++i)
             {
-                egg.Top += egg.eggSpeed;
-                if (rocket.Bounds.IntersectsWith(egg.Bounds))
+                eggs[i].Top += eggs[i].eggSpeed;
+                if (rocket.Bounds.IntersectsWith(eggs[i].Bounds))
                 {
-                    this.Controls.Remove(egg);
-                    eggs.Remove(egg);
+                    this.Controls.Remove(eggs[i]);
+                    eggs.Remove(eggs[i]);
                     decreaseHeart();
                     break;
                 }
-                if(egg.Top >= 300 - (egg.Height + 20))
+                Debug.WriteLine(eggs[i].Top + " " + (this.Height) + " " +  (eggs[i].Height));
+                if(eggs[i].Top >= this.Height - (eggs[i].Height + 50))
                 {
-                    egg.eggSpeed = 0;
-                    if(egg.eggLandCount/10 < eggBreakFrames.Count)
+                    eggs[i].eggSpeed = 0;
+                    if(eggs[i].eggLandCount/10 < eggBreakFrames.Count)
                     {
-                        egg.Image = eggBreakFrames[egg.eggLandCount/10 % 8];
-                        egg.eggLandCount++;
+                        eggs[i].Image = eggBreakFrames[eggs[i].eggLandCount/10 % 8];
+                        eggs[i].eggLandCount++;
                     }
                     else
                     {
-                        this.Controls.Remove(egg);
-                        eggs.Remove(egg);
+                        this.Controls.Remove(eggs[i]);
+                        eggs.Remove(eggs[i]);
                     }
                 }
             }
@@ -191,9 +192,9 @@ namespace GameBanGa
             Bitmap heart = Properties.Resources.heartLive;
             for(int i = 0; i < 3; ++i)
             {
-                hearts.Add(new Piece(50, 50));
+                hearts.Add(new Piece(30, 30));
                 hearts[i].Image = heart;
-                hearts[i].Left = this.Width - (3 - i) * 45;
+                hearts[i].Left = this.Width - (3 - i) * 30;
                 this.Controls.Add(hearts[i]);
             }
                 
@@ -211,7 +212,7 @@ namespace GameBanGa
 
             Random rand = new Random();
             Piece chicken = availableChickens[rand.Next() % availableChickens.Count];
-            Piece egg = new Piece(20, 20);
+            Piece egg = new Piece(10, 10);
             egg.Image = Properties.Resources.eggWhite;
             egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
             egg.Top = chicken.Top + chicken.Height;

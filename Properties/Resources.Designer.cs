@@ -253,9 +253,19 @@ namespace GameBanGa.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ship {
+        internal static System.Drawing.Bitmap shipDead {
             get {
-                object obj = ResourceManager.GetObject("ship", resourceCulture);
+                object obj = ResourceManager.GetObject("shipDead", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shipLive {
+            get {
+                object obj = ResourceManager.GetObject("shipLive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

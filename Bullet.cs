@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Drawing;
 
 namespace GameBanGa
 {
-    public class Bullet : Ship
+    public class Bullet : ObjectGame
     {
-        private int bulletSpeed = 1;
-        public Bullet(int width, int heigh, Bitmap image)
+        public int bulletSpeed;
+
+        public Bullet(int width, int heigh, Bitmap image,
+            int bulletSpeed)
             : base(width, heigh, image)
         {
+            this.bulletSpeed = bulletSpeed;
         }
     }
 }
