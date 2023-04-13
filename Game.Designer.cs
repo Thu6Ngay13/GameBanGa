@@ -40,7 +40,7 @@
             // pnl_Play
             // 
             this.pnl_Play.BackColor = System.Drawing.SystemColors.Highlight;
-            this.pnl_Play.Location = new System.Drawing.Point(0, 0);
+            this.pnl_Play.Location = new System.Drawing.Point(1, 0);
             this.pnl_Play.Name = "pnl_Play";
             this.pnl_Play.Size = new System.Drawing.Size(500, 700);
             this.pnl_Play.TabIndex = 0;

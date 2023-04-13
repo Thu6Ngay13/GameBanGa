@@ -16,16 +16,15 @@ namespace GameBanGa
     public partial class Game : Form
     {
         private Ship ship;
-        private Hearts he;
         private Chicken[,] chickens;
         private List<Egg> eggs;
         private List<Bullet> bullets;
-        private List<Hearts> hearts = new List<Hearts>();
-        private int live = 5;
+        private List<Heart> hearts;
+
+        private int live;
         private int rows;
         private int cols;
         private int[] topChicken;
-
         private bool scintillate;
 
         public Game()
@@ -38,62 +37,23 @@ namespace GameBanGa
         private void initial()
         {
             
-            createHeart();
             initialShip();
             initialChicken(3, 8);
             
-        }
-
-        private void createHeart()
-        {
-            
-            for (int i = 0; i < this.live; i++)
-            {
-                he = new Hearts(30, 30, Properties.Resources.heartLive);
-                he.Left = this.pnl_Play.Width / 2 + 155 - (30*i);
-                he.Top = this.pnl_Play.Height / 2 - 285;
-                this.pnl_Play.Controls.Add(he);
-                this.hearts.Add(he);
-
-            }
-
-        }
-        private void decreaseHeart()
-        {
-            if (this.hearts.Count > 0)
-            {
-                this.pnl_Play.Controls.Remove(hearts[live - 1]);
-                this.hearts.RemoveAt(live - 1);
-                this.live--;
-            }
-        }
-        private void ChickenDie(int x, int y)
-        {
-            if (this.chickens.Length > 0)
-            {
-                this.pnl_Play.Controls.Remove(chickens[x, y]);
-                this.chickens[x, y].Image = null;
-            }
         }
         private void initialShip()
         {
             this.ship = new Ship(50, 50, Properties.Resources.shipLive);
             this.ship.Left = this.pnl_Play.Width / 2 - ship.Width / 2;
             this.ship.Top = this.pnl_Play.Height - ship.Height;
+
+            this.live = 5;
+            initialHeart();
+
             this.bullets = new List<Bullet>();
-            
             this.scintillate = false;
 
             this.pnl_Play.Controls.Add(ship);
-        }
-        private void initialBullet()
-        {
-            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 10);
-            bullet.Left = this.ship.Left + this.ship.Width / 2 - bullet.Width / 2;
-            bullet.Top = this.ship.Top - bullet.Height;
-
-            this.bullets.Add(bullet);
-            this.pnl_Play.Controls.Add(bullet);
         }
         private void initialChicken(int rows, int cols)
         {
@@ -105,7 +65,7 @@ namespace GameBanGa
             for (int x = 0; x < cols; ++x)
             {
                 this.topChicken[x] = rows - 1;
-                for (int y = rows-1; y >= 0; --y)
+                for (int y = rows - 1; y >= 0; --y)
                 {
                     Chicken chicken = new Chicken(30, 30, Properties.Resources.chickenRed, 10, 0, 3);
                     chicken.Left = x * 30; //khoang cach theo chieu x giua cac con ga la 30
@@ -115,6 +75,63 @@ namespace GameBanGa
                     this.pnl_Play.Controls.Add(chicken);
                 }
             }
+        }
+        private void initialHeart()
+        {
+            this.hearts = new List<Heart>();
+            for (int i = 0; i < this.live; i++)
+            {
+                Heart heart = new Heart(30, 30, Properties.Resources.heartLive);
+                heart.Left = this.pnl_Play.Width - (i + 1) * heart.Width;
+                heart.Top = 0;
+
+                this.hearts.Add(heart);
+                this.pnl_Play.Controls.Add(heart);
+            }
+
+        }
+        private void initialBullet()
+        {
+            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 10);
+            bullet.Left = this.ship.Left + this.ship.Width / 2 - bullet.Width / 2;
+            bullet.Top = this.ship.Top - bullet.Height;
+
+            this.bullets.Add(bullet);
+            this.pnl_Play.Controls.Add(bullet);
+        }
+
+        //
+        private void shipDie()
+        {
+            if (tmr_WaitRevival.Enabled) return;
+
+            decreaseHeart();
+            if (this.live == 0) this.Close();
+
+            tmr_WaitRevival.Start();
+            tmr_Revival.Start();
+        }
+        private void chickenDie(int x, int y)
+        {
+            if (this.chickens.Length > 0)
+            {
+                this.pnl_Play.Controls.Remove(chickens[x, y]);
+                this.chickens[x, y].Image = null;
+            }
+        }
+        private void decreaseHeart()
+        {
+            if (this.hearts.Count > 0)
+            {
+                this.pnl_Play.Controls.Remove(hearts[live - 1]);
+                this.hearts.RemoveAt(live - 1);
+                this.live--;
+            }
+        }
+        private void removeBullet(int i)
+        {
+            this.pnl_Play.Controls.Remove(bullets[i]);
+            this.bullets.RemoveAt(i);
         }
 
         //su kien tren pnl_play
@@ -145,7 +162,6 @@ namespace GameBanGa
             }
             this.pnl_Play.Refresh();
         }
-
         private void tmr_Bullets_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < this.bullets.Count; ++i)
@@ -153,8 +169,7 @@ namespace GameBanGa
                 this.bullets[i].Top -= this.bullets[i].bulletSpeed;
                 if (this.bullets[i].Top < 0)
                     {
-                        this.pnl_Play.Controls.Remove(bullets[i]);
-                        this.bullets.RemoveAt(i);
+                        removeBullet(i);
                         --i;
                     }
             }
@@ -177,14 +192,13 @@ namespace GameBanGa
                     chickens[y, x].Left += chickens[y, x].chickenSpeed;
                     if (chickens[y, x].Bounds.IntersectsWith(ship.Bounds))
                     {
-                        tmr_Revival.Start();
-                        tmr_WaitRevival.Start();
+                        shipDie();
                     }
                     for (int i = 0; i < this.bullets.Count-1; ++i)
                     {
                         if (chickens[y, x].Left == bullets[i].Left )
                         {
-                            ChickenDie(y, x);
+                            chickenDie(y, x);
                         }        
                     }
                 }
@@ -196,12 +210,7 @@ namespace GameBanGa
         private void tmr_Revival_Tick(object sender, EventArgs e)
         {
             scintillate = !scintillate;
-            if (scintillate)
-            {
-                this.ship.Image = Properties.Resources.shipDead;
-                if (this.live == 0) this.Close();
-                else decreaseHeart();
-            }
+            if (scintillate) this.ship.Image = Properties.Resources.shipDead;
             else this.ship.Image = Properties.Resources.shipLive;
         }
         private void tmr_WaitRevival_Tick(object sender, EventArgs e)
