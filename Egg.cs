@@ -5,30 +5,33 @@ namespace GameBanGa
 {
     public class Egg : ObjectGame
     {
-        
-        private int eggSpeed;
-        private int eggFrameTh = 0;
 
-        private int nState;
-        private Bitmap eggBreak;
+        private Bitmap eggBreakImage;
         private List<Bitmap> eggBreakframes;
+        private int numberOfFrame;
+        private int eggFrameTh;
 
-        public Egg(int width, int heigh, Bitmap image, Bitmap eggBreak) 
+        public int eggSpeed;        
+
+        public Egg(int width, int heigh, Bitmap image,
+            Bitmap eggBreakImage, int numberOfFrame, int eggFrameTh, int eggSpeed) 
             : base(width, heigh, image)
         {
-            this.eggBreak = eggBreak;
-        }
-
-        public void speed(int eggSpeed, int eggFrameTh)
-        {
+            this.eggBreakImage = eggBreakImage;
+            this.numberOfFrame = numberOfFrame;
+            this.eggFrameTh = 0;
             this.eggSpeed = eggSpeed;
-            this.eggFrameTh = eggFrameTh;
+
+            Tool.divideImageIntoFrames(eggBreakImage, eggBreakframes, numberOfFrame);
         }
 
-        public void eggNextState()
+        public bool nextFrame()
         {
-            if (eggFrameTh + 1 == nState) return;
-                
+            if (eggFrameTh == numberOfFrame - 1) return false;
+
+            this.eggFrameTh = eggFrameTh + 1;
+            base.Image = eggBreakframes[this.eggFrameTh];
+            return true;
         }
     }
 }

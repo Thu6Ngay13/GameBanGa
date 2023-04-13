@@ -16,7 +16,6 @@ namespace GameBanGa
         private int lives;
         private int rows;
         private int cols;
-        private int[] topChicken;
         private bool scintillate;
 
         public Game()
@@ -52,11 +51,9 @@ namespace GameBanGa
             this.rows = rows;
             this.cols = cols;
             this.chickens = new Chicken[rows, cols];
-            this.topChicken = new int[cols];
 
             for (int x = 0; x < cols; ++x)
             {
-                this.topChicken[x] = rows - 1;
                 for (int y = rows - 1; y >= 0; --y)
                 {
                     Chicken chicken = new Chicken(30, 30, Properties.Resources.chickenRed, 10, 0, 3);
@@ -110,6 +107,7 @@ namespace GameBanGa
             if (this.chickens[y, x] == null) return false;
 
             this.pnl_Play.Controls.Remove(chickens[y, x]);
+            this.chickens[y, x].Dispose();
             this.chickens[y, x] = null;
 
             return true;
@@ -193,14 +191,32 @@ namespace GameBanGa
         private void tmr_Chickens_Tick(object sender, EventArgs e)
         {
             int revDirect = 1;
-            if (this.chickens[0, 0].Left < 0 ||
-                this.chickens[0, 0].Left + this.cols * 30 > this.pnl_Play.Width)
-                revDirect = -1;
-            //for (int x = 0; x < this.cols && revDirect == 1; ++x)
-            //    for (int y = this.rows - 1; y >= 0 && revDirect == 1; --y)
-            //        if (this.chickens[y, x].Left < 0 ||
-            //            this.chickens[y, x].Left + this.cols * 30 > this.pnl_Play.Width) 
-            //            revDirect = -1;
+            
+            int x1 = -1;
+            int y1 = -1;
+
+            int x2 = -1;
+            int y2 = -1;
+
+            for (int x = 0; x < this.cols; ++x)
+                for (int y = this.rows - 1; y >= 0; --y)
+                {
+                    if(chickens[y, x] != null)
+                    {
+                        y2 = y;
+                        x2 = x;
+                        if (x1 == -1 && y1 == -1)
+                        {
+                            y1 = y;
+                            x1 = x;
+                        }
+                    }
+                }
+
+            if (x1 != -1 && y1 != -1 && 
+                (this.chickens[y1, x1].Left < 0 ||
+                this.chickens[y2, x2].Left + this.chickens[y2, x2].Width > this.pnl_Play.Width))
+                    revDirect = -1;
 
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
