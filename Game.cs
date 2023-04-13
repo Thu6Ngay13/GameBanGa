@@ -194,8 +194,13 @@ namespace GameBanGa
         {
             int revDirect = 1;
             if (this.chickens[0, 0].Left < 0 ||
-                this.chickens[0, 0].Left + this.cols * 30 > this.pnl_Play.Width) 
+                this.chickens[0, 0].Left + this.cols * 30 > this.pnl_Play.Width)
                 revDirect = -1;
+            //for (int x = 0; x < this.cols && revDirect == 1; ++x)
+            //    for (int y = this.rows - 1; y >= 0 && revDirect == 1; --y)
+            //        if (this.chickens[y, x].Left < 0 ||
+            //            this.chickens[y, x].Left + this.cols * 30 > this.pnl_Play.Width) 
+            //            revDirect = -1;
 
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
