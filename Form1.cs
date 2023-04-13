@@ -122,6 +122,7 @@ namespace GameBanGa
 
         private void endGame()
         {
+            MessageBox.Show("Ban da chet");
             
         }
 

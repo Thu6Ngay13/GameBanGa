@@ -52,7 +52,6 @@
     <Compile Include="Chicken.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="Egg.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -67,6 +66,9 @@
     </Compile>
     <Compile Include="Game.Designer.cs">
       <DependentUpon>Game.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Hearts.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ObjectGame.cs">
       <SubType>Component</SubType>

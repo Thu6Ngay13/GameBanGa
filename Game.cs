@@ -16,9 +16,11 @@ namespace GameBanGa
     public partial class Game : Form
     {
         private Ship ship;
+        private Hearts he;
         private Chicken[,] chickens;
         private List<Egg> eggs;
         private List<Bullet> bullets;
+        private List<Hearts> hearts;
 
         private int rows;
         private int cols;
@@ -37,8 +39,22 @@ namespace GameBanGa
         {
             initialShip();
             initialChicken(3, 8);
+            createHeart();
         }
 
+        private void createHeart()
+        {
+            
+            for (int i = 0;i <3; i++)
+            {
+                he = new Hearts(30, 30, Properties.Resources.heartLive);
+                he.Left = this.pnl_Play.Width / 2 + 155 - (30*i);
+                he.Top = this.pnl_Play.Height / 2 - 285 ;
+                this.pnl_Play.Controls.Add(he);
+
+            }
+
+        }
         private void initialShip()
         {
             this.ship = new Ship(50, 50, Properties.Resources.shipLive);
