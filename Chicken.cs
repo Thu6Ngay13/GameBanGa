@@ -24,10 +24,11 @@ namespace GameBanGa
             base.Image = chickenFrames[chickenFrameTh];
         }
 
-        public void nextFrame()
+        public bool nextFrame()
         {
             this.chickenFrameTh = (chickenFrameTh + 1) % numberOfFrame;
             base.Image = chickenFrames[this.chickenFrameTh];
+            return true;
         }
     }
 }

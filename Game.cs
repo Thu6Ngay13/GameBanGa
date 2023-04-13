@@ -51,7 +51,8 @@ namespace GameBanGa
             this.rows = rows;
             this.cols = cols;
             this.chickens = new Chicken[rows, cols];
-            eggs = new List<Egg>();
+            this.eggs = new List<Egg>();
+
             for (int x = 0; x < cols; ++x)
             {
                 for (int y = rows - 1; y >= 0; --y)
@@ -81,7 +82,7 @@ namespace GameBanGa
         }
         private void initialBullet()
         {
-            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 10);
+            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 5);
             bullet.Left = this.ship.Left + this.ship.Width / 2 - bullet.Width / 2;
             bullet.Top = this.ship.Top - bullet.Height;
 
@@ -91,19 +92,20 @@ namespace GameBanGa
         private void initialEgg()
         {
             List<Chicken> availableChickens = new List<Chicken>();
-            for (int i = 0; i < this.rows; ++i)
-                for (int j = 0; j < this.cols; ++j)
+            for (int x = 0; x < this.cols; ++x)
+                for (int y = this.rows - 1; y >= 0; --y)
                 {
-                    if (chickens[i, j] == null) continue;
-                    availableChickens.Add(chickens[i, j]);
+                    if (chickens[y, x] == null) continue;
+                    availableChickens.Add(chickens[y, x]);
                 }
 
             Random rand = new Random();
             Chicken chicken = availableChickens[rand.Next() % availableChickens.Count];
+            
             Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak, 8, 0, 5);
-
             egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
             egg.Top = chicken.Top + chicken.Height;
+
             this.eggs.Add(egg);
             this.pnl_Play.Controls.Add(egg);
         }
@@ -150,6 +152,15 @@ namespace GameBanGa
 
             return true;
         }
+        private bool removeEgg(int i)
+        {
+            if (i < 0 || i >= eggs.Count) return false;
+
+            this.pnl_Play.Controls.Remove(eggs[i]);
+            this.eggs.RemoveAt(i);
+
+            return true;
+        }
 
         //su kien tren pnl_play
         private void pnl_Play_Paint(object sender, PaintEventArgs e)
@@ -189,7 +200,7 @@ namespace GameBanGa
                 for (int x = 0; x < this.cols; ++x)
                     for (int y = this.rows - 1; y >= 0; --y)
                     {
-                        Debug.WriteLine(i);
+                        //Debug.WriteLine(i);
                         if (chickens[y, x] == null) continue;
                         if (chickens[y, x].Bounds.IntersectsWith(bullets[i].Bounds))
                         {
@@ -246,35 +257,36 @@ namespace GameBanGa
                     chickens[y, x].Left += chickens[y, x].chickenSpeed;
 
                     if (chickens[y, x].Bounds.IntersectsWith(ship.Bounds))
+                    {
                         shipDie();
+                        chickenDie(y, x);
+                    }
                 }
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
             Random rand = new Random();
-            if (rand.Next(200) == 5) initialEgg();
+            if (rand.Next(100) < 2) initialEgg();
             if (eggs.Count == 0) return;
+
             for (int i = 0; i < eggs.Count; ++i)
             {
                 eggs[i].Top += eggs[i].eggSpeed;
-                if (ship.Bounds.IntersectsWith(eggs[i].Bounds))
+                
+                if (eggs[i].Bounds.IntersectsWith(ship.Bounds))
                 {
-                    this.Controls.Remove(eggs[i]);
-                    eggs.Remove(eggs[i]);
-                    decreaseHeart();
+                    shipDie();
+                    removeEgg(i);
                     break;
                 }
-                Debug.WriteLine(eggs[i].Top + " " + (this.Height) + " " + (eggs[i].Height));
+
+                //Debug.WriteLine(eggs[i].Top + " " + (this.Height) + " " + (eggs[i].Height));
                 if (eggs[i].Top >= this.Height - (eggs[i].Height + 50))
                 {
                     eggs[i].eggSpeed = 0;
-                    if (eggs[i].nextFrame()) ;
 
-                    else
-                    {
-                        this.Controls.Remove(eggs[i]);
-                        eggs.Remove(eggs[i]);
-                    }
+                    if (eggs[i].nextFrame()) {}
+                    else removeEgg(i);
                 }
             }
         }

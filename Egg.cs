@@ -18,6 +18,7 @@ namespace GameBanGa
             : base(width, heigh, image)
         {
             this.eggBreakImage = eggBreakImage;
+            this.eggBreakframes = new List<Bitmap>();
             this.numberOfFrame = numberOfFrame;
             this.eggFrameTh = 0;
             this.eggSpeed = eggSpeed;

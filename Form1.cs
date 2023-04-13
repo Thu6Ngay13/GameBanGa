@@ -84,6 +84,7 @@ namespace GameBanGa
             Random rand = new Random();
             if (rand.Next(200) == 5) launchRandomEgg();
             if (eggs.Count == 0) return;
+
             for(int i = 0; i < eggs.Count; ++i)
             {
                 eggs[i].Top += eggs[i].eggSpeed;
