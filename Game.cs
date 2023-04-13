@@ -151,26 +151,12 @@ namespace GameBanGa
             for (int i = 0; i < this.bullets.Count; ++i)
             {
                 this.bullets[i].Top -= this.bullets[i].bulletSpeed;
-                //for (int x = 0; x < this.cols; ++x)
-                //{
-                //    for (int y = this.rows - 1; y >= 0; --y)
-                //    {
-                //        if (chickens[y, x].Left == bullets[i].Left || chickens[y, x].Top == bullets[i].Top)
-                //        {
-                //            ChickenDie(y, x);
-                //            this.pnl_Play.Controls.Remove(bullets[i]);
-                //            this.bullets.RemoveAt(i);
-                //            MessageBox.Show("Da ban trung ga");
-                //        }
-                //        else
-                            if (this.bullets[i].Top < 0)
-                                {
-                                    this.pnl_Play.Controls.Remove(bullets[i]);
-                                    this.bullets.RemoveAt(i);
-                                    --i;
-                                }
-                   // }
-               // }
+                if (this.bullets[i].Top < 0)
+                    {
+                        this.pnl_Play.Controls.Remove(bullets[i]);
+                        this.bullets.RemoveAt(i);
+                        --i;
+                    }
             }
         }
         private void tmr_Chickens_Tick(object sender, EventArgs e)
@@ -199,10 +185,6 @@ namespace GameBanGa
                         if (chickens[y, x].Left == bullets[i].Left )
                         {
                             ChickenDie(y, x);
-                            MessageBox.Show("Da chet");
-
-                        
-
                         }        
                     }
                 }
