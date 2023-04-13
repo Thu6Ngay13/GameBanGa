@@ -51,7 +51,7 @@ namespace GameBanGa
             this.rows = rows;
             this.cols = cols;
             this.chickens = new Chicken[rows, cols];
-
+            eggs = new List<Egg>();
             for (int x = 0; x < cols; ++x)
             {
                 for (int y = rows - 1; y >= 0; --y)
@@ -87,6 +87,25 @@ namespace GameBanGa
 
             this.bullets.Add(bullet);
             this.pnl_Play.Controls.Add(bullet);
+        }
+        private void initialEgg()
+        {
+            List<Chicken> availableChickens = new List<Chicken>();
+            for (int i = 0; i < this.rows; ++i)
+                for (int j = 0; j < this.cols; ++j)
+                {
+                    if (chickens[i, j] == null) continue;
+                    availableChickens.Add(chickens[i, j]);
+                }
+
+            Random rand = new Random();
+            Chicken chicken = availableChickens[rand.Next() % availableChickens.Count];
+            Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak, 8, 0, 5);
+
+            egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
+            egg.Top = chicken.Top + chicken.Height;
+            this.eggs.Add(egg);
+            this.pnl_Play.Controls.Add(egg);
         }
 
         //
@@ -232,7 +251,32 @@ namespace GameBanGa
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
+            Random rand = new Random();
+            if (rand.Next(200) == 5) initialEgg();
+            if (eggs.Count == 0) return;
+            for (int i = 0; i < eggs.Count; ++i)
+            {
+                eggs[i].Top += eggs[i].eggSpeed;
+                if (ship.Bounds.IntersectsWith(eggs[i].Bounds))
+                {
+                    this.Controls.Remove(eggs[i]);
+                    eggs.Remove(eggs[i]);
+                    decreaseHeart();
+                    break;
+                }
+                Debug.WriteLine(eggs[i].Top + " " + (this.Height) + " " + (eggs[i].Height));
+                if (eggs[i].Top >= this.Height - (eggs[i].Height + 50))
+                {
+                    eggs[i].eggSpeed = 0;
+                    if (eggs[i].nextFrame()) ;
 
+                    else
+                    {
+                        this.Controls.Remove(eggs[i]);
+                        eggs.Remove(eggs[i]);
+                    }
+                }
+            }
         }
         private void tmr_Revival_Tick(object sender, EventArgs e)
         {
