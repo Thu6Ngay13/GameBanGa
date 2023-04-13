@@ -20,8 +20,8 @@ namespace GameBanGa
         private Chicken[,] chickens;
         private List<Egg> eggs;
         private List<Bullet> bullets;
-        private List<Hearts> hearts;
-
+        private List<Hearts> hearts = new List<Hearts>();
+        private int live = 5;
         private int rows;
         private int cols;
         private int[] topChicken;
@@ -37,23 +37,35 @@ namespace GameBanGa
         //Khoi tao cac doi tuong trong game
         private void initial()
         {
+            
+            createHeart();
             initialShip();
             initialChicken(3, 8);
-            createHeart();
+            
         }
 
         private void createHeart()
         {
             
-            for (int i = 0;i <3; i++)
+            for (int i = 0; i < this.live; i++)
             {
                 he = new Hearts(30, 30, Properties.Resources.heartLive);
                 he.Left = this.pnl_Play.Width / 2 + 155 - (30*i);
-                he.Top = this.pnl_Play.Height / 2 - 285 ;
+                he.Top = this.pnl_Play.Height / 2 - 285;
                 this.pnl_Play.Controls.Add(he);
+                this.hearts.Add(he);
 
             }
 
+        }
+        private void decreaseHeart()
+        {
+            if (this.hearts.Count > 0)
+            {
+                this.pnl_Play.Controls.Remove(hearts[live - 1]);
+                this.hearts.RemoveAt(live - 1);
+                this.live--;
+            }
         }
         private void initialShip()
         {
@@ -61,6 +73,7 @@ namespace GameBanGa
             this.ship.Left = this.pnl_Play.Width / 2 - ship.Width / 2;
             this.ship.Top = this.pnl_Play.Height - ship.Height;
             this.bullets = new List<Bullet>();
+            
             this.scintillate = false;
 
             this.pnl_Play.Controls.Add(ship);
@@ -168,7 +181,12 @@ namespace GameBanGa
         private void tmr_Revival_Tick(object sender, EventArgs e)
         {
             scintillate = !scintillate;
-            if (scintillate) this.ship.Image = Properties.Resources.shipDead;
+            if (scintillate)
+            {
+                this.ship.Image = Properties.Resources.shipDead;
+                if (this.live == 0) this.Close();
+                else decreaseHeart();
+            }
             else this.ship.Image = Properties.Resources.shipLive;
         }
         private void tmr_WaitRevival_Tick(object sender, EventArgs e)
