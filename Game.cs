@@ -9,8 +9,7 @@ namespace GameBanGa
     {
         private Ship ship;
         private Chicken[,] chickens;
-       
-        private List<Egg> eggs = new List<Egg>();
+        private List<Egg> eggs;
         private List<Bullet> bullets;
         private List<Heart> hearts;
 
@@ -29,10 +28,10 @@ namespace GameBanGa
         //Khoi tao cac doi tuong trong game
         private void initial()
         {
-            
+
             initialShip();
             initialChicken(3, 8);
-            
+
         }
         private void initialShip()
         {
@@ -206,9 +205,9 @@ namespace GameBanGa
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
                 {
-                    if (chickens[y, x].Image == null) continue;
+                    if (chickens[y, x] == null) continue;
                     chickens[y, x].nextFrame();
-                    chickens[y, x].chickenSpeed *= revDirect; 
+                    chickens[y, x].chickenSpeed *= revDirect;
                     chickens[y, x].Left += chickens[y, x].chickenSpeed;
 
                     if (chickens[y, x].Bounds.IntersectsWith(ship.Bounds))
@@ -217,26 +216,7 @@ namespace GameBanGa
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
-            
-           
-        }
-        private void launchRandomEgg()
-        {
-            List<Chicken> availableChickens = new List<Chicken>();
-            for (int i = 0; i < this.rows; ++i)
-                for (int j = 0; j < this.cols; ++j)
-                {
-                    if (chickens[i, j].Image == null) continue;
-                    availableChickens.Add(chickens[i, j]);
-                }
 
-            Random rand = new Random();
-            Chicken chicken = availableChickens[rand.Next() % availableChickens.Count];
-            Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak);
-            egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
-            egg.Top = chicken.Top + chicken.Height;
-            this.eggs.Add(egg);
-            this.pnl_Play.Controls.Add(egg);
         }
         private void tmr_Revival_Tick(object sender, EventArgs e)
         {
@@ -249,6 +229,6 @@ namespace GameBanGa
             this.ship.Image = Properties.Resources.shipLive;
             tmr_Revival.Stop();
             tmr_WaitRevival.Stop();
-        }        
+        }
     }
 }
