@@ -1,15 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace GameBanGa
 {
@@ -21,7 +13,7 @@ namespace GameBanGa
         private List<Bullet> bullets;
         private List<Heart> hearts;
 
-        private int live;
+        private int lives;
         private int rows;
         private int cols;
         private int[] topChicken;
@@ -47,7 +39,7 @@ namespace GameBanGa
             this.ship.Left = this.pnl_Play.Width / 2 - ship.Width / 2;
             this.ship.Top = this.pnl_Play.Height - ship.Height;
 
-            this.live = 5;
+            this.lives = 5;
             initialHeart();
 
             this.bullets = new List<Bullet>();
@@ -79,7 +71,7 @@ namespace GameBanGa
         private void initialHeart()
         {
             this.hearts = new List<Heart>();
-            for (int i = 0; i < this.live; i++)
+            for (int i = 0; i < this.lives; i++)
             {
                 Heart heart = new Heart(30, 30, Properties.Resources.heartLive);
                 heart.Left = this.pnl_Play.Width - (i + 1) * heart.Width;
@@ -101,37 +93,45 @@ namespace GameBanGa
         }
 
         //
-        private void shipDie()
+        private bool shipDie()
         {
-            if (tmr_WaitRevival.Enabled) return;
+            if (tmr_WaitRevival.Enabled) return false;
 
             decreaseHeart();
-            if (this.live == 0) this.Close();
+            if (this.lives == 0) this.Close();
 
             tmr_WaitRevival.Start();
             tmr_Revival.Start();
+
+            return true;
         }
-        private void chickenDie(int x, int y)
+        private bool chickenDie(int x, int y)
         {
-            if (this.chickens.Length > 0)
-            {
-                this.pnl_Play.Controls.Remove(chickens[x, y]);
-                this.chickens[x, y].Image = null;
-            }
+            if (this.chickens[y, x] == null) return false;
+
+            this.pnl_Play.Controls.Remove(chickens[y, x]);
+            this.chickens[y, x] = null;
+
+            return true;
         }
-        private void decreaseHeart()
+        private bool decreaseHeart()
         {
-            if (this.hearts.Count > 0)
-            {
-                this.pnl_Play.Controls.Remove(hearts[live - 1]);
-                this.hearts.RemoveAt(live - 1);
-                this.live--;
-            }
+            if (this.lives < 1) return false;
+
+            this.pnl_Play.Controls.Remove(hearts[lives - 1]);
+            this.hearts.RemoveAt(lives - 1);
+            this.lives--;
+
+            return true;
         }
-        private void removeBullet(int i)
+        private bool removeBullet(int i)
         {
+            if (i < 0 || i >= this.bullets.Count) return false;
+
             this.pnl_Play.Controls.Remove(bullets[i]);
             this.bullets.RemoveAt(i);
+
+            return true;
         }
 
         //su kien tren pnl_play
@@ -164,14 +164,30 @@ namespace GameBanGa
         }
         private void tmr_Bullets_Tick(object sender, EventArgs e)
         {
+            bool removed = false;
             for (int i = 0; i < this.bullets.Count; ++i)
             {
                 this.bullets[i].Top -= this.bullets[i].bulletSpeed;
-                if (this.bullets[i].Top < 0)
+
+                for (int x = 0; x < this.cols; ++x)
+                    for (int y = this.rows - 1; y >= 0; --y)
                     {
-                        removeBullet(i);
-                        --i;
+                        Debug.WriteLine(i);
+                        if (chickens[y, x] == null) continue;
+                        if (chickens[y, x].Bounds.IntersectsWith(bullets[i].Bounds))
+                        {
+                            chickenDie(x, y);
+                            removed = removeBullet(i);
+
+                            if (this.bullets.Count == 0) return;
+                        }
                     }
+
+                if (this.bullets[i].Top < 0)
+                    removed = removeBullet(i);
+
+                if (this.bullets.Count == 0) return;
+                if (removed) --i;
             }
         }
         private void tmr_Chickens_Tick(object sender, EventArgs e)
@@ -181,26 +197,16 @@ namespace GameBanGa
                 this.chickens[0, 0].Left + this.cols * 30 > this.pnl_Play.Width) 
                 revDirect = -1;
 
-            Debug.WriteLine(chickens[0, 0].Left + " " + chickens[rows - 1, cols - 1].Right);
-
-            for (int x = 0; x < cols; ++x)
-                for (int y = rows - 1; y >= 0; --y)
+            for (int x = 0; x < this.cols; ++x)
+                for (int y = this.rows - 1; y >= 0; --y)
                 {
                     if (chickens[y, x] == null) continue;
                     chickens[y, x].nextFrame();
                     chickens[y, x].chickenSpeed *= revDirect; 
                     chickens[y, x].Left += chickens[y, x].chickenSpeed;
+
                     if (chickens[y, x].Bounds.IntersectsWith(ship.Bounds))
-                    {
                         shipDie();
-                    }
-                    for (int i = 0; i < this.bullets.Count-1; ++i)
-                    {
-                        if (chickens[y, x].Left == bullets[i].Left )
-                        {
-                            chickenDie(y, x);
-                        }        
-                    }
                 }
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
