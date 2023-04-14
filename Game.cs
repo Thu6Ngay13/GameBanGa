@@ -179,7 +179,8 @@ namespace GameBanGa
         //su kien tren pnl_play
         private void pnl_Play_Paint(object sender, PaintEventArgs e)
         {
-            this.pnl_Play.Focus();
+            if (this.lives >0) this.pnl_Play.Focus();
+            else this.FrmSc.Focus();
         }
         private void pnl_Play_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -328,6 +329,8 @@ namespace GameBanGa
                 this.FrmSc.Show();
                 this.showScore = true;
                 this.lives = 0;
+                tmr_Revival.Stop();
+                tmr_WaitRevival.Stop();
             }
 
         }
