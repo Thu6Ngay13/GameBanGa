@@ -17,6 +17,8 @@ namespace GameBanGa
         private int rows;
         private int cols;
         private bool scintillate;
+        private bool showScore = false;
+        Endgame FrmSc = new Endgame();
 
         public Game()
         {
@@ -31,7 +33,6 @@ namespace GameBanGa
             initialShip();
             initialChicken(3, 8);
             initialScore();
-
         }
         private void initialShip()
         {
@@ -121,11 +122,13 @@ namespace GameBanGa
         {
             if (tmr_WaitRevival.Enabled) return false;
 
-            decreaseHeart();
+            decreaseHeart(); 
+            
             tmr_WaitRevival.Start();
             tmr_Revival.Start();
             this.score -= 10;
             this.lblDiem.Text = "Điểm của bạn: " + score.ToString();
+
             return true;
         }
         private bool chickenDie(int x, int y)
@@ -142,8 +145,9 @@ namespace GameBanGa
         private bool decreaseHeart()
         {
 
-            if (this.lives <= 1)
+            if (this.lives <2 )
             {
+                endGame();
                 return false;
             }
             else
@@ -169,7 +173,6 @@ namespace GameBanGa
 
             this.pnl_Play.Controls.Remove(eggs[i]);
             this.eggs.RemoveAt(i);
-
             return true;
         }
 
@@ -308,8 +311,6 @@ namespace GameBanGa
             if (scintillate)
             {
                 this.ship.Image = Properties.Resources.shipDead;
-                if (decreaseHeart()==false) endGame();
-
             }
             else this.ship.Image = Properties.Resources.shipLive;
         }
@@ -318,13 +319,17 @@ namespace GameBanGa
             this.ship.Image = Properties.Resources.shipLive;
             tmr_Revival.Stop();
             tmr_WaitRevival.Stop();
+            
         }
         private void endGame()
         {
-            Endgame FrmSc = new Endgame();
-            FrmSc.ShowDialog();
-            tmr_Revival.Stop();
-            tmr_WaitRevival.Stop();
+            if (this.showScore == false)
+            {
+                this.FrmSc.Show();
+                this.showScore = true;
+                this.lives = 0;
+            }
+
         }
     }
 }
