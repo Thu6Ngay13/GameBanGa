@@ -12,7 +12,7 @@ namespace GameBanGa
         private List<Egg> eggs;
         private List<Bullet> bullets;
         private List<Heart> hearts;
-
+        int score = 0;
         private int lives;
         private int rows;
         private int cols;
@@ -30,6 +30,7 @@ namespace GameBanGa
 
             initialShip();
             initialChicken(3, 8);
+            initialScore();
 
         }
         private void initialShip()
@@ -109,6 +110,11 @@ namespace GameBanGa
             this.eggs.Add(egg);
             this.pnl_Play.Controls.Add(egg);
         }
+        private void initialScore()
+        {
+            if (this.score>0 ) this.lblDiem.Text = "Điểm của bạn: " + score.ToString();
+            else this.lblDiem.Text = "Điểm của bạn: 0" ;
+        }
 
         //
         private bool shipDie()
@@ -116,11 +122,10 @@ namespace GameBanGa
             if (tmr_WaitRevival.Enabled) return false;
 
             decreaseHeart();
-
-
             tmr_WaitRevival.Start();
             tmr_Revival.Start();
-
+            this.score -= 10;
+            this.lblDiem.Text = "Điểm của bạn: " + score.ToString();
             return true;
         }
         private bool chickenDie(int x, int y)
@@ -130,15 +135,15 @@ namespace GameBanGa
             this.pnl_Play.Controls.Remove(chickens[y, x]);
             this.chickens[y, x].Dispose();
             this.chickens[y, x] = null;
-
+            this.score += 10;
+            this.lblDiem.Text =  "Điểm của bạn: " + score.ToString();
             return true;
         }
         private bool decreaseHeart()
         {
 
-            if (this.lives == 1)
+            if (this.lives <= 1)
             {
-                this.Close();
                 return false;
             }
             else
@@ -223,6 +228,7 @@ namespace GameBanGa
                 if (this.bullets.Count == 0) return;
                 if (removed) --i;
             }
+
         }
         private void tmr_Chickens_Tick(object sender, EventArgs e)
         {
@@ -299,12 +305,24 @@ namespace GameBanGa
         private void tmr_Revival_Tick(object sender, EventArgs e)
         {
             scintillate = !scintillate;
-            if (scintillate) this.ship.Image = Properties.Resources.shipDead;
+            if (scintillate)
+            {
+                this.ship.Image = Properties.Resources.shipDead;
+                if (decreaseHeart()==false) endGame();
+
+            }
             else this.ship.Image = Properties.Resources.shipLive;
         }
         private void tmr_WaitRevival_Tick(object sender, EventArgs e)
         {
             this.ship.Image = Properties.Resources.shipLive;
+            tmr_Revival.Stop();
+            tmr_WaitRevival.Stop();
+        }
+        private void endGame()
+        {
+            Endgame FrmSc = new Endgame();
+            FrmSc.ShowDialog();
             tmr_Revival.Stop();
             tmr_WaitRevival.Stop();
         }

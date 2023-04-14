@@ -9,6 +9,7 @@ namespace GameBanGa
     public partial class Form1 : Form
     {
         private int live = 3;
+        
         //Danh sach so mang song
         private List<Piece> hearts = new List<Piece>();
 

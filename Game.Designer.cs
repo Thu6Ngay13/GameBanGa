@@ -35,11 +35,14 @@
             this.tme_Eggs = new System.Windows.Forms.Timer(this.components);
             this.tmr_WaitRevival = new System.Windows.Forms.Timer(this.components);
             this.tmr_Revival = new System.Windows.Forms.Timer(this.components);
+            this.lblDiem = new System.Windows.Forms.Label();
+            this.pnl_Play.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnl_Play
             // 
             this.pnl_Play.BackColor = System.Drawing.SystemColors.Highlight;
+            this.pnl_Play.Controls.Add(this.lblDiem);
             this.pnl_Play.Location = new System.Drawing.Point(1, 0);
             this.pnl_Play.Name = "pnl_Play";
             this.pnl_Play.Size = new System.Drawing.Size(500, 700);
@@ -75,6 +78,15 @@
             this.tmr_Revival.Interval = 300;
             this.tmr_Revival.Tick += new System.EventHandler(this.tmr_Revival_Tick);
             // 
+            // lblDiem
+            // 
+            this.lblDiem.AutoSize = true;
+            this.lblDiem.Location = new System.Drawing.Point(4, 0);
+            this.lblDiem.Name = "lblDiem";
+            this.lblDiem.Size = new System.Drawing.Size(95, 16);
+            this.lblDiem.TabIndex = 0;
+            this.lblDiem.Text = "Điểm của bạn: ";
+            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -85,6 +97,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Game";
             this.Text = "Game";
+            this.pnl_Play.ResumeLayout(false);
+            this.pnl_Play.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -97,5 +111,6 @@
         private System.Windows.Forms.Timer tme_Eggs;
         private System.Windows.Forms.Timer tmr_WaitRevival;
         private System.Windows.Forms.Timer tmr_Revival;
+        private System.Windows.Forms.Label lblDiem;
     }
 }
