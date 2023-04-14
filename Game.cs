@@ -116,7 +116,7 @@ namespace GameBanGa
             if (tmr_WaitRevival.Enabled) return false;
 
             decreaseHeart();
-            if (this.lives == 0) this.Close();
+
 
             tmr_WaitRevival.Start();
             tmr_Revival.Start();
@@ -135,12 +135,18 @@ namespace GameBanGa
         }
         private bool decreaseHeart()
         {
-            if (this.lives < 1) return false;
 
-            this.pnl_Play.Controls.Remove(hearts[lives - 1]);
-            this.hearts.RemoveAt(lives - 1);
-            this.lives--;
-
+            if (this.lives == 1)
+            {
+                this.Close();
+                return false;
+            }
+            else
+            {
+                this.pnl_Play.Controls.Remove(hearts[lives - 1]);
+                this.hearts.RemoveAt(lives - 1);
+                this.lives--;
+            }
             return true;
         }
         private bool removeBullet(int i)
