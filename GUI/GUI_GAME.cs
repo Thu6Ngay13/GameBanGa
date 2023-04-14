@@ -1,29 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace GameBanGa
 {
-    public partial class Game : Form
+    public partial class GUI_GAME : Form
     {
         private Ship ship;
         private Chicken[,] chickens;
         private List<Egg> eggs;
         private List<Bullet> bullets;
         private List<Heart> hearts;
-        int score = 0;
+
         private int lives;
         private int rows;
         private int cols;
         private bool scintillate;
-        private bool showScore = false;
-        Endgame FrmSc = new Endgame();
+        private int score;
 
-        public Game()
+        public GUI_GAME()
         {
             InitializeComponent();
+            initialUI_Play();
             initial();
+        }
+
+        //
+        private void initialUI_Play()
+        {
+            //this.pnl_Play = new UI_Play();
+            //this.pnl_Play.SuspendLayout();
+            this.SuspendLayout();
+
+            //this.pnl_Play.BackColor = System.Drawing.SystemColors.Highlight;
+            //this.pnl_Play.Location = new System.Drawing.Point(1, 1);
+            //this.pnl_Play.Name = "pnl_Play";
+            //this.pnl_Play.Size = new System.Drawing.Size(500, 700);
+            //this.pnl_Play.TabIndex = 0;
+            //this.pnl_Play.Paint += new PaintEventHandler(this.pnl_Play_Paint);
+            //this.pnl_Play.PreviewKeyDown += new PreviewKeyDownEventHandler(this.pnl_Play_PreviewKeyDown);
+            this.Controls.Add(pnl_Play);
+
+            //this.pnl_Play.ResumeLayout(false);
+            //this.pnl_Play.PerformLayout();
+            this.ResumeLayout(false);
+        }
+        private void initialUI_EndGame()
+        {
+            //this.pnl_EndGame = new GUI_EndGame();
+            //this.pnl_EndGame.SuspendLayout();
+            this.SuspendLayout();
+
+            this.lbl_ScoreEndGame.Text = "Điểm của bạn là: " + this.score.ToString();
+            //this.pnl_EndGame.BackColor = System.Drawing.SystemColors.Highlight;
+            //this.pnl_EndGame.Location = new System.Drawing.Point(1, 1);
+            //this.pnl_EndGame.Name = "pnl_Play";
+            //this.pnl_EndGame.Size = new System.Drawing.Size(500, 700);
+            //this.pnl_EndGame.TabIndex = 0;
+            this.Controls.Add(pnl_EndGame);
+
+            //this.pnl_EndGame.ResumeLayout(false);
+            //this.pnl_EndGame.PerformLayout();
+            this.ResumeLayout(false);
         }
 
         //Khoi tao cac doi tuong trong game
@@ -101,9 +139,11 @@ namespace GameBanGa
                     availableChickens.Add(chickens[y, x]);
                 }
 
+            if (availableChickens.Count == 0) return;
+
             Random rand = new Random();
             Chicken chicken = availableChickens[rand.Next() % availableChickens.Count];
-            
+
             Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak, 8, 0, 5);
             egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
             egg.Top = chicken.Top + chicken.Height;
@@ -113,8 +153,7 @@ namespace GameBanGa
         }
         private void initialScore()
         {
-            if (this.score>0 ) this.lblDiem.Text = "Điểm của bạn: " + score.ToString();
-            else this.lblDiem.Text = "Điểm của bạn: 0" ;
+            this.score = 0;
         }
 
         //
@@ -122,12 +161,11 @@ namespace GameBanGa
         {
             if (tmr_WaitRevival.Enabled) return false;
 
-            decreaseHeart(); 
-            
+            changePoint(-3);
+            if (!decreaseHeart()) endGame();
+
             tmr_WaitRevival.Start();
             tmr_Revival.Start();
-            this.score -= 10;
-            this.lblDiem.Text = "Điểm của bạn: " + score.ToString();
 
             return true;
         }
@@ -135,28 +173,23 @@ namespace GameBanGa
         {
             if (this.chickens[y, x] == null) return false;
 
+            changePoint(1);
+
             this.pnl_Play.Controls.Remove(chickens[y, x]);
             this.chickens[y, x].Dispose();
             this.chickens[y, x] = null;
-            this.score += 10;
-            this.lblDiem.Text =  "Điểm của bạn: " + score.ToString();
+
             return true;
         }
         private bool decreaseHeart()
         {
+            if (this.lives <= 0) return false;
 
-            if (this.lives <2 )
-            {
-                endGame();
-                return false;
-            }
-            else
-            {
-                this.pnl_Play.Controls.Remove(hearts[lives - 1]);
-                this.hearts.RemoveAt(lives - 1);
-                this.lives--;
-            }
-            return true;
+            this.pnl_Play.Controls.Remove(hearts[lives - 1]);
+            this.hearts.RemoveAt(lives - 1);
+            this.lives--;
+
+            return lives > 0;
         }
         private bool removeBullet(int i)
         {
@@ -173,14 +206,27 @@ namespace GameBanGa
 
             this.pnl_Play.Controls.Remove(eggs[i]);
             this.eggs.RemoveAt(i);
+
+            return true;
+        }
+        private bool changePoint(int i)
+        {
+            if (this.score + 10*i < 0)
+            {
+                this.score = 0;
+                this.lbl_ScorePlay.Text = "Điểm: " + this.score.ToString();
+                return false;
+            }
+
+            this.score += 10 * i;
+            this.lbl_ScorePlay.Text = "Điểm: " + this.score.ToString();
             return true;
         }
 
         //su kien tren pnl_play
         private void pnl_Play_Paint(object sender, PaintEventArgs e)
         {
-            if (this.lives >0) this.pnl_Play.Focus();
-            else this.FrmSc.Focus();
+            this.pnl_Play.Focus();
         }
         private void pnl_Play_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -237,7 +283,7 @@ namespace GameBanGa
         private void tmr_Chickens_Tick(object sender, EventArgs e)
         {
             int revDirect = 1;
-            
+
             int x1 = -1;
             int y1 = -1;
 
@@ -247,7 +293,7 @@ namespace GameBanGa
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
                 {
-                    if(chickens[y, x] != null)
+                    if (chickens[y, x] != null)
                     {
                         y2 = y;
                         x2 = x;
@@ -259,10 +305,10 @@ namespace GameBanGa
                     }
                 }
 
-            if (x1 != -1 && y1 != -1 && 
+            if (x1 != -1 && y1 != -1 &&
                 (this.chickens[y1, x1].Left < 0 ||
                 this.chickens[y2, x2].Left + this.chickens[y2, x2].Width > this.pnl_Play.Width))
-                    revDirect = -1;
+                revDirect = -1;
 
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
@@ -275,20 +321,20 @@ namespace GameBanGa
                     if (chickens[y, x].Bounds.IntersectsWith(ship.Bounds))
                     {
                         shipDie();
-                        chickenDie(y, x);
+                        chickenDie(x, y);
                     }
                 }
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
             Random rand = new Random();
-            if (rand.Next(100) < 2) initialEgg();
+            if (rand.Next(100) < 10) initialEgg();
             if (eggs.Count == 0) return;
 
             for (int i = 0; i < eggs.Count; ++i)
             {
                 eggs[i].Top += eggs[i].eggSpeed;
-                
+
                 if (eggs[i].Bounds.IntersectsWith(ship.Bounds))
                 {
                     shipDie();
@@ -301,7 +347,7 @@ namespace GameBanGa
                 {
                     eggs[i].eggSpeed = 0;
 
-                    if (eggs[i].nextFrame()) {}
+                    if (eggs[i].nextFrame()) { }
                     else removeEgg(i);
                 }
             }
@@ -320,19 +366,12 @@ namespace GameBanGa
             this.ship.Image = Properties.Resources.shipLive;
             tmr_Revival.Stop();
             tmr_WaitRevival.Stop();
-            
+
         }
         private void endGame()
         {
-            if (this.showScore == false)
-            {
-                this.FrmSc.Show();
-                this.showScore = true;
-                this.lives = 0;
-                tmr_Revival.Stop();
-                tmr_WaitRevival.Stop();
-            }
-
+            this.Controls.Remove(pnl_Play);
+            initialUI_EndGame();
         }
     }
 }
