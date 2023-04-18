@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-
+using System.Media;
 namespace GameBanGa
 {
     public class Chicken : ObjectGame

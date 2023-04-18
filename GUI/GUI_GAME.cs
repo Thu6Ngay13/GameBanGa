@@ -142,7 +142,7 @@ namespace GameBanGa
             if (availableChickens.Count == 0) return;
 
             Random rand = new Random();
-            Chicken chicken = availableChickens[rand.Next() % availableChickens.Count];
+            Chicken chicken = availableChickens[(rand.Next()/10) % availableChickens.Count];
 
             Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak, 8, 0, 5);
             egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
