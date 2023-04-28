@@ -211,6 +211,7 @@ namespace GameBanGa
         }
         private bool changePoint(int i)
         {
+            if (this.lives<= 0) return false;
             if (this.score + 10*i < 0)
             {
                 this.score = 0;
