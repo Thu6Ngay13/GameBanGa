@@ -21,47 +21,38 @@ namespace GameBanGa
         public GUI_GAME()
         {
             InitializeComponent();
-            initialUI_Play();
-            initial();
+            initialUI_Menu();
         }
 
         //
+        private void initialUI_Menu()
+        {
+            this.SuspendLayout();
+            this.Controls.Add(pnl_Menu);
+            this.ResumeLayout(false);
+        }
         private void initialUI_Play()
         {
-            //this.pnl_Play = new UI_Play();
-            //this.pnl_Play.SuspendLayout();
             this.SuspendLayout();
-
-            //this.pnl_Play.BackColor = System.Drawing.SystemColors.Highlight;
-            //this.pnl_Play.Location = new System.Drawing.Point(1, 1);
-            //this.pnl_Play.Name = "pnl_Play";
-            //this.pnl_Play.Size = new System.Drawing.Size(500, 700);
-            //this.pnl_Play.TabIndex = 0;
-            //this.pnl_Play.Paint += new PaintEventHandler(this.pnl_Play_Paint);
-            //this.pnl_Play.PreviewKeyDown += new PreviewKeyDownEventHandler(this.pnl_Play_PreviewKeyDown);
+            this.Controls.Remove(this.pnl_Menu);
             this.Controls.Add(pnl_Play);
-
-            //this.pnl_Play.ResumeLayout(false);
-            //this.pnl_Play.PerformLayout();
             this.ResumeLayout(false);
+
+            this.pnl_Play.SuspendLayout();
+            this.initial();
+            this.pnl_Play.ResumeLayout(false);
+
+            this.tmr_Bullets.Enabled = true;
+            this.tmr_Chickens.Enabled = true;
+            this.tmr_Eggs.Enabled = true;
         }
         private void initialUI_EndGame()
         {
-            //this.pnl_EndGame = new GUI_EndGame();
-            //this.pnl_EndGame.SuspendLayout();
-            this.SuspendLayout();
-
+            this.pnl_EndGame.SuspendLayout();
+            this.Controls.Remove(pnl_Play);
             this.lbl_ScoreEndGame.Text = "Điểm của bạn là: " + this.score.ToString();
-            //this.pnl_EndGame.BackColor = System.Drawing.SystemColors.Highlight;
-            //this.pnl_EndGame.Location = new System.Drawing.Point(1, 1);
-            //this.pnl_EndGame.Name = "pnl_Play";
-            //this.pnl_EndGame.Size = new System.Drawing.Size(500, 700);
-            //this.pnl_EndGame.TabIndex = 0;
             this.Controls.Add(pnl_EndGame);
-
-            //this.pnl_EndGame.ResumeLayout(false);
-            //this.pnl_EndGame.PerformLayout();
-            this.ResumeLayout(false);
+            this.pnl_EndGame.ResumeLayout(false);
         }
 
         //Khoi tao cac doi tuong trong game
@@ -142,7 +133,7 @@ namespace GameBanGa
             if (availableChickens.Count == 0) return;
 
             Random rand = new Random();
-            Chicken chicken = availableChickens[(rand.Next()/10) % availableChickens.Count];
+            Chicken chicken = availableChickens[(rand.Next() / 10) % availableChickens.Count];
 
             Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak, 8, 0, 5);
             egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
@@ -211,8 +202,8 @@ namespace GameBanGa
         }
         private bool changePoint(int i)
         {
-            if (this.lives<= 0) return false;
-            if (this.score + 10*i < 0)
+            if (this.lives <= 0) return false;
+            if (this.score + 10 * i < 0)
             {
                 this.score = 0;
                 this.lbl_ScorePlay.Text = "Điểm: " + this.score.ToString();
@@ -371,8 +362,16 @@ namespace GameBanGa
         }
         private void endGame()
         {
-            this.Controls.Remove(pnl_Play);
+
             initialUI_EndGame();
+        }
+        private void btn_Play_Click(object sender, EventArgs e)
+        {
+            this.initialUI_Play();
+        }
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

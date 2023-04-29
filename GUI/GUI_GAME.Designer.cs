@@ -33,13 +33,17 @@
             this.lbl_ScorePlay = new System.Windows.Forms.Label();
             this.tmr_Bullets = new System.Windows.Forms.Timer(this.components);
             this.tmr_Chickens = new System.Windows.Forms.Timer(this.components);
-            this.tme_Eggs = new System.Windows.Forms.Timer(this.components);
+            this.tmr_Eggs = new System.Windows.Forms.Timer(this.components);
             this.tmr_WaitRevival = new System.Windows.Forms.Timer(this.components);
             this.tmr_Revival = new System.Windows.Forms.Timer(this.components);
             this.pnl_EndGame = new System.Windows.Forms.Panel();
             this.lbl_ScoreEndGame = new System.Windows.Forms.Label();
+            this.pnl_Menu = new System.Windows.Forms.Panel();
+            this.btn_Exit = new System.Windows.Forms.Button();
+            this.btn_Play = new System.Windows.Forms.Button();
             this.pnl_Play.SuspendLayout();
             this.pnl_EndGame.SuspendLayout();
+            this.pnl_Menu.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnl_Play
@@ -63,21 +67,18 @@
             // 
             // tmr_Bullets
             // 
-            this.tmr_Bullets.Enabled = true;
             this.tmr_Bullets.Interval = 10;
             this.tmr_Bullets.Tick += new System.EventHandler(this.tmr_Bullets_Tick);
             // 
             // tmr_Chickens
             // 
-            this.tmr_Chickens.Enabled = true;
             this.tmr_Chickens.Interval = 10;
             this.tmr_Chickens.Tick += new System.EventHandler(this.tmr_Chickens_Tick);
             // 
-            // tme_Eggs
+            // tmr_Eggs
             // 
-            this.tme_Eggs.Enabled = true;
-            this.tme_Eggs.Interval = 10;
-            this.tme_Eggs.Tick += new System.EventHandler(this.tme_Eggs_Tick);
+            this.tmr_Eggs.Interval = 10;
+            this.tmr_Eggs.Tick += new System.EventHandler(this.tme_Eggs_Tick);
             // 
             // tmr_WaitRevival
             // 
@@ -108,19 +109,48 @@
             this.lbl_ScoreEndGame.TabIndex = 0;
             this.lbl_ScoreEndGame.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pnl_Menu
+            // 
+            this.pnl_Menu.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_Menu.Controls.Add(this.btn_Exit);
+            this.pnl_Menu.Controls.Add(this.btn_Play);
+            this.pnl_Menu.Location = new System.Drawing.Point(1, 1);
+            this.pnl_Menu.Name = "pnl_Menu";
+            this.pnl_Menu.Size = new System.Drawing.Size(500, 700);
+            this.pnl_Menu.TabIndex = 1;
+            // 
+            // btn_Exit
+            // 
+            this.btn_Exit.Location = new System.Drawing.Point(153, 331);
+            this.btn_Exit.Name = "btn_Exit";
+            this.btn_Exit.Size = new System.Drawing.Size(200, 50);
+            this.btn_Exit.TabIndex = 1;
+            this.btn_Exit.Text = "Exit";
+            this.btn_Exit.UseVisualStyleBackColor = true;
+            this.btn_Exit.Click += new System.EventHandler(this.btn_Exit_Click);
+            // 
+            // btn_Play
+            // 
+            this.btn_Play.Location = new System.Drawing.Point(153, 260);
+            this.btn_Play.Name = "btn_Play";
+            this.btn_Play.Size = new System.Drawing.Size(200, 50);
+            this.btn_Play.TabIndex = 0;
+            this.btn_Play.Text = "Play";
+            this.btn_Play.UseVisualStyleBackColor = true;
+            this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
+            // 
             // GUI_GAME
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(500, 700);
-            //this.Controls.Add(this.pnl_Play);
-            //this.Controls.Add(this.pnl_EndGame);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "GUI_GAME";
             this.Text = "Game Bắn Gà";
             this.pnl_Play.ResumeLayout(false);
             this.pnl_EndGame.ResumeLayout(false);
+            this.pnl_Menu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -131,10 +161,13 @@
         private System.Windows.Forms.Panel pnl_EndGame;
         private System.Windows.Forms.Timer tmr_Bullets;
         private System.Windows.Forms.Timer tmr_Chickens;
-        private System.Windows.Forms.Timer tme_Eggs;
+        private System.Windows.Forms.Timer tmr_Eggs;
         private System.Windows.Forms.Timer tmr_WaitRevival;
         private System.Windows.Forms.Timer tmr_Revival;
         private System.Windows.Forms.Label lbl_ScoreEndGame;
         private System.Windows.Forms.Label lbl_ScorePlay;
+        private System.Windows.Forms.Panel pnl_Menu;
+        private System.Windows.Forms.Button btn_Exit;
+        private System.Windows.Forms.Button btn_Play;
     }
 }
