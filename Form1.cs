@@ -19,7 +19,8 @@ namespace GameBanGa
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Application.Run(new GUI_GAME()); 
+            GUI_GAME play = new GUI_GAME();
+            play.ShowDialog(play);
         }
     }
 }

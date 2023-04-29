@@ -79,15 +79,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tool\Tool.cs" />
-    <Compile Include="GUI\UI_ENDGAME.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GUI\UI_MENU.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GUI\UI_PLAY.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
