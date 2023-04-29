@@ -129,10 +129,10 @@
 
         private System.Windows.Forms.Panel pnl_Play;
         private System.Windows.Forms.Panel pnl_EndGame;
-        private System.Windows.Forms.Timer tmr_Bullets; // đạn bay
-        private System.Windows.Forms.Timer tmr_Chickens;// gà bay
-        private System.Windows.Forms.Timer tme_Eggs;// trứng rơi
-        private System.Windows.Forms.Timer tmr_WaitRevival;// game chạy
+        private System.Windows.Forms.Timer tmr_Bullets;
+        private System.Windows.Forms.Timer tmr_Chickens;
+        private System.Windows.Forms.Timer tme_Eggs;
+        private System.Windows.Forms.Timer tmr_WaitRevival;
         private System.Windows.Forms.Timer tmr_Revival;
         private System.Windows.Forms.Label lbl_ScoreEndGame;
         private System.Windows.Forms.Label lbl_ScorePlay;
