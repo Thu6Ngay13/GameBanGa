@@ -19,7 +19,7 @@ namespace GameBanGa
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            new GUI_GAME();
+            Application.Run(new GUI_GAME()); 
         }
     }
 }
