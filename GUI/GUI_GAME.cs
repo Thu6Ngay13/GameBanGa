@@ -68,7 +68,7 @@ namespace GameBanGa
         {
 
             initialShip();
-            initialChicken(3, 8);
+            initial_superChicken(2, 6);
             initialScore();
         }
         private void initialShip()
@@ -99,6 +99,26 @@ namespace GameBanGa
                     Chicken chicken = new Chicken(30, 30, Properties.Resources.chickenRed, 10, 0, 3);
                     chicken.Left = x * 30; //khoang cach theo chieu x giua cac con ga la 30
                     chicken.Top = y * 30 + chicken.Height; //khoang cach theo chieu y cua cac con la 30
+
+                    this.chickens[y, x] = chicken;
+                    this.pnl_Play.Controls.Add(chicken);
+                }
+            }
+        }
+        private void initial_superChicken(int rows, int cols)
+        {
+            this.rows = rows;
+            this.cols = cols;
+            this.chickens = new Chicken[rows, cols];
+            this.eggs = new List<Egg>();
+
+            for (int x = 0; x < cols; ++x)
+            {
+                for (int y = rows - 1; y >= 0; --y)
+                {
+                    Chicken chicken = new Chicken(70, 50, Properties.Resources.chickenGreen, 10, 0, 3);
+                    chicken.Left = x *70 ; //khoang cach theo chieu x giua cac con ga la 30
+                    chicken.Top = (y) * 50 + chicken.Height ; //khoang cach theo chieu y cua cac con la 30
 
                     this.chickens[y, x] = chicken;
                     this.pnl_Play.Controls.Add(chicken);
