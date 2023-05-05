@@ -17,6 +17,7 @@ namespace GameBanGa
         private int cols;
         private bool scintillate;
         private int score;
+        private int level;
 
         public GUI_GAME()
         {
@@ -79,7 +80,7 @@ namespace GameBanGa
         {
 
             initialShip();
-            initial_superChicken(2, 6);
+            initialChicken(1);
             initialScore();
         }
         private void initialShip()
@@ -88,7 +89,7 @@ namespace GameBanGa
             this.ship.Left = this.pnl_Play.Width / 2 - ship.Width / 2;
             this.ship.Top = this.pnl_Play.Height - ship.Height;
 
-            this.lives = 5;
+            this.lives = 10;
             initialHeart();
 
             this.bullets = new List<Bullet>();
@@ -96,8 +97,14 @@ namespace GameBanGa
 
             this.pnl_Play.Controls.Add(ship);
         }
-        private void initialChicken(int rows, int cols)
+        private void initialChicken(int i)
         {
+            if(i == 1) initialBaseChicken(3, 8);
+            else if (i == 2) initialSuperChicken(2, 6);
+        }
+        private void initialBaseChicken(int rows, int cols)
+        {
+            this.level = 1;
             this.rows = rows;
             this.cols = cols;
             this.chickens = new Chicken[rows, cols];
@@ -108,20 +115,20 @@ namespace GameBanGa
                 for (int y = rows - 1; y >= 0; --y)
                 {
                     Chicken chicken = new Chicken(30, 30, Properties.Resources.chickenRed, 10, 0, 3);
-                    chicken.Left = x * 30; //khoang cach theo chieu x giua cac con ga la 30
-                    chicken.Top = y * 30 + chicken.Height; //khoang cach theo chieu y cua cac con la 30
+                    chicken.Left = x * 50; //khoang cach theo chieu x giua cac con ga la 30
+                    chicken.Top = y * 50 + chicken.Height; //khoang cach theo chieu y cua cac con la 30
 
                     this.chickens[y, x] = chicken;
                     this.pnl_Play.Controls.Add(chicken);
                 }
             }
         }
-        private void initial_superChicken(int rows, int cols)
+        private void initialSuperChicken(int rows, int cols)
         {
+            this.level = 2;
             this.rows = rows;
             this.cols = cols;
             this.chickens = new Chicken[rows, cols];
-            this.eggs = new List<Egg>();
 
             for (int x = 0; x < cols; ++x)
             {
@@ -351,7 +358,11 @@ namespace GameBanGa
                         chickenDie(x, y);
                     }
                 }
-            if (!chicken_live) endGame(true);
+            if (!chicken_live)
+            {
+                if (this.level == 1) initialChicken(2);
+                else endGame(true);
+            }
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
