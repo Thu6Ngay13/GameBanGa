@@ -37,12 +37,15 @@
             this.tmr_WaitRevival = new System.Windows.Forms.Timer(this.components);
             this.tmr_Revival = new System.Windows.Forms.Timer(this.components);
             this.pnl_EndGame = new System.Windows.Forms.Panel();
+            this.pnl_WinGame = new System.Windows.Forms.Panel();
             this.lbl_ScoreEndGame = new System.Windows.Forms.Label();
+            this.lbl_ScoreWinGame = new System.Windows.Forms.Label();
             this.pnl_Menu = new System.Windows.Forms.Panel();
             this.btn_Exit = new System.Windows.Forms.Button();
             this.btn_Play = new System.Windows.Forms.Button();
             this.pnl_Play.SuspendLayout();
             this.pnl_EndGame.SuspendLayout();
+            this.pnl_WinGame.SuspendLayout();
             this.pnl_Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,6 +103,16 @@
             this.pnl_EndGame.Size = new System.Drawing.Size(500, 700);
             this.pnl_EndGame.TabIndex = 0;
             // 
+            // pnl_WinGame
+            // 
+            this.pnl_WinGame.BackgroundImage = global::GameBanGa.Properties.Resources.win;
+            this.pnl_WinGame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pnl_WinGame.Controls.Add(this.lbl_ScoreEndGame);
+            this.pnl_WinGame.Location = new System.Drawing.Point(1, 1);
+            this.pnl_WinGame.Name = "pnl_WinGame";
+            this.pnl_WinGame.Size = new System.Drawing.Size(500, 600);
+            this.pnl_WinGame.TabIndex = 0;
+            // 
             // lbl_ScoreEndGame
             // 
             this.lbl_ScoreEndGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
@@ -108,6 +121,15 @@
             this.lbl_ScoreEndGame.Size = new System.Drawing.Size(330, 50);
             this.lbl_ScoreEndGame.TabIndex = 0;
             this.lbl_ScoreEndGame.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_ScoreWinGame
+            // 
+            this.lbl_ScoreWinGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lbl_ScoreWinGame.Location = new System.Drawing.Point(85, 450);
+            this.lbl_ScoreWinGame.Name = "lbl_ScoreWinGame";
+            this.lbl_ScoreWinGame.Size = new System.Drawing.Size(330, 50);
+            this.lbl_ScoreWinGame.TabIndex = 0;
+            this.lbl_ScoreWinGame.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnl_Menu
             // 
@@ -150,6 +172,7 @@
             this.Text = "Game Bắn Gà";
             this.pnl_Play.ResumeLayout(false);
             this.pnl_EndGame.ResumeLayout(false);
+            this.pnl_WinGame.ResumeLayout(false);
             this.pnl_Menu.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -159,12 +182,14 @@
 
         private System.Windows.Forms.Panel pnl_Play;
         private System.Windows.Forms.Panel pnl_EndGame;
+        private System.Windows.Forms.Panel pnl_WinGame;
         private System.Windows.Forms.Timer tmr_Bullets;
         private System.Windows.Forms.Timer tmr_Chickens;
         private System.Windows.Forms.Timer tmr_Eggs;
         private System.Windows.Forms.Timer tmr_WaitRevival;
         private System.Windows.Forms.Timer tmr_Revival;
         private System.Windows.Forms.Label lbl_ScoreEndGame;
+        private System.Windows.Forms.Label lbl_ScoreWinGame;
         private System.Windows.Forms.Label lbl_ScorePlay;
         private System.Windows.Forms.Panel pnl_Menu;
         private System.Windows.Forms.Button btn_Exit;

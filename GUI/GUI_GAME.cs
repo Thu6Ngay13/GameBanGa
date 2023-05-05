@@ -54,9 +54,17 @@ namespace GameBanGa
             this.Controls.Add(pnl_EndGame);
             this.pnl_EndGame.ResumeLayout(false);
         }
+        private void initialUI_WinGame()
+        {
+            this.pnl_WinGame.SuspendLayout();
+            this.Controls.Remove(pnl_Play);
+            this.lbl_ScoreWinGame.Text = "Điểm của bạn là: " + this.score.ToString();
+            this.Controls.Add(pnl_WinGame);
+            this.pnl_WinGame.ResumeLayout(false);
+        }
 
-        //Khoi tao cac doi tuong trong game
-        private void initial()
+    //Khoi tao cac doi tuong trong game
+    private void initial()
         {
 
             initialShip();
@@ -133,7 +141,7 @@ namespace GameBanGa
             if (availableChickens.Count == 0) return;
 
             Random rand = new Random();
-            Chicken chicken = availableChickens[(rand.Next() / 10) % availableChickens.Count];
+            Chicken chicken = availableChickens[(rand.Next() / 1000) % availableChickens.Count];
 
             Egg egg = new Egg(10, 10, Properties.Resources.eggWhite, Properties.Resources.eggWhiteBreak, 8, 0, 5);
             egg.Left = chicken.Left + chicken.Width / 2 - egg.Width / 2;
@@ -301,12 +309,13 @@ namespace GameBanGa
                 (this.chickens[y1, x1].Left < 0 ||
                 this.chickens[y2, x2].Left + this.chickens[y2, x2].Width > this.pnl_Play.Width))
                 revDirect = -1;
-
+            bool chicken_live = false;
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
                 {
                     if (chickens[y, x] == null) continue;
                     chickens[y, x].nextFrame();
+                    chicken_live = true;
                     chickens[y, x].chickenSpeed *= revDirect;
                     chickens[y, x].Left += chickens[y, x].chickenSpeed;
 
@@ -316,6 +325,7 @@ namespace GameBanGa
                         chickenDie(x, y);
                     }
                 }
+            if (chicken_live == false) winGame();
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
@@ -365,6 +375,12 @@ namespace GameBanGa
 
             initialUI_EndGame();
         }
+        private void winGame()
+        {
+
+            initialUI_WinGame();
+        }
+
         private void btn_Play_Click(object sender, EventArgs e)
         {
             this.initialUI_Play();
