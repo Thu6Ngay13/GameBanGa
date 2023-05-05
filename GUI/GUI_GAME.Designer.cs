@@ -45,7 +45,8 @@ namespace GameBanGa
             this.pnl_Menu = new System.Windows.Forms.Panel();
             this.btn_Exit = new System.Windows.Forms.Button();
             this.btn_Play = new System.Windows.Forms.Button();
-            this.pnl_Play.SuspendLayout();
+            this.tmr_ExtraHearts = new System.Windows.Forms.Timer(this.components);
+            this.tmr_ExtraBullets = new System.Windows.Forms.Timer(this.components);
             this.pnl_EndGame.SuspendLayout();
             this.pnl_Menu.SuspendLayout();
             this.SuspendLayout();
@@ -81,7 +82,7 @@ namespace GameBanGa
             // tmr_Eggs
             // 
             this.tmr_Eggs.Interval = 10;
-            this.tmr_Eggs.Tick += new System.EventHandler(this.tme_Eggs_Tick);
+            this.tmr_Eggs.Tick += new System.EventHandler(this.tmr_Eggs_Tick);
             // 
             // tmr_WaitRevival
             // 
@@ -163,17 +164,25 @@ namespace GameBanGa
             this.btn_Play.UseVisualStyleBackColor = true;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
+            // tmr_ExtraHearts
+            // 
+            this.tmr_ExtraHearts.Interval = 10;
+            this.tmr_ExtraHearts.Tick += new System.EventHandler(this.tmr_ExtraHearts_Tick);
+            // 
+            // tmr_ExtraBullets
+            // 
+            this.tmr_ExtraBullets.Interval = 10;
+            this.tmr_ExtraBullets.Tick += new System.EventHandler(this.tmr_ExtraBullets_Tick);
+            // 
             // GUI_GAME
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(500, 700);
-            //this.Controls.Add(this.pnl_Menu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "GUI_GAME";
             this.Text = "Game Bắn Gà";
-            this.pnl_Play.ResumeLayout(false);
             this.pnl_EndGame.ResumeLayout(false);
             this.pnl_Menu.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -196,5 +205,7 @@ namespace GameBanGa
         private System.Windows.Forms.Button btn_Play;
         private Button btn_Replay;
         private Button btn_Menu;
+        private Timer tmr_ExtraHearts;
+        private Timer tmr_ExtraBullets;
     }
 }

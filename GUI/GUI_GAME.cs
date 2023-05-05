@@ -1,6 +1,9 @@
-﻿using System;
+﻿using GameBanGa.Properties;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace GameBanGa
 {
@@ -10,11 +13,14 @@ namespace GameBanGa
         private Chicken[,] chickens;
         private List<Egg> eggs;
         private List<Bullet> bullets;
+        private List<Bullet> extrabullets;
         private List<Heart> hearts;
-
+        private List<Heart> extrahearts;        
+        
         private int lives;
         private int rows;
         private int cols;
+        private Bitmap typebullet;
         private bool scintillate;
         private int score;
         private int level;
@@ -52,6 +58,8 @@ namespace GameBanGa
             this.tmr_Bullets.Enabled = true;
             this.tmr_Chickens.Enabled = true;
             this.tmr_Eggs.Enabled = true;
+            this.tmr_ExtraHearts.Enabled = true;
+            this.tmr_ExtraBullets.Enabled = true;   
         }
         private void initialUI_EndGame(bool isWin)
         {
@@ -71,8 +79,10 @@ namespace GameBanGa
             this.tmr_Bullets.Enabled = false;
             this.tmr_Chickens.Enabled = false;
             this.tmr_Eggs.Enabled = false;
+            this.tmr_ExtraHearts.Enabled = false;
+            this.tmr_ExtraBullets.Enabled = false;
             this.tmr_Revival.Enabled = false;
-            this.tmr_WaitRevival.Enabled = false;   
+            this.tmr_WaitRevival.Enabled = false;
         }
 
         //Khoi tao cac doi tuong trong game
@@ -88,10 +98,12 @@ namespace GameBanGa
             this.ship.Left = this.pnl_Play.Width / 2 - ship.Width / 2;
             this.ship.Top = this.pnl_Play.Height - ship.Height;
 
-            this.lives = 10;
+            this.lives = 3;
             initialHeart();
 
+            this.typebullet = Bullet.Bullets[3];
             this.bullets = new List<Bullet>();
+            this.extrabullets = new List<Bullet>();
             this.scintillate = false;
 
             this.pnl_Play.Controls.Add(ship);
@@ -145,25 +157,45 @@ namespace GameBanGa
         private void initialHeart()
         {
             this.hearts = new List<Heart>();
+            this.extrahearts = new List<Heart>();
             for (int i = 0; i < this.lives; i++)
             {
-                Heart heart = new Heart(30, 30, Properties.Resources.heartLive);
+                Heart heart = new Heart(30, 30, Properties.Resources.heartLive, 0);
                 heart.Left = this.pnl_Play.Width - (i + 1) * heart.Width;
                 heart.Top = 0;
 
                 this.hearts.Add(heart);
                 this.pnl_Play.Controls.Add(heart);
             }
-
+        }
+        private void initialExtraHeart()
+        {
+            Random rand = new Random();
+            Heart extraheart = new Heart(30, 30, Properties.Resources.heartLive, 7);
+            extraheart.Left = rand.Next(0, pnl_Play.Width - extraheart.Width);
+            extraheart.Top = 0;
+            this.extrahearts.Add(extraheart);
+            this.pnl_Play.Controls.Add(extraheart);
         }
         private void initialBullet()
         {
-            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 10);
+            Bullet bullet = new Bullet(typebullet.Width, typebullet.Height, typebullet, 10);
             bullet.Left = this.ship.Left + this.ship.Width / 2 - bullet.Width / 2;
             bullet.Top = this.ship.Top - bullet.Height;
 
             this.bullets.Add(bullet);
             this.pnl_Play.Controls.Add(bullet);
+        }
+        private void initialExtraBullet()
+        {
+            Random rand = new Random();
+            Bitmap imgbullet = Bullet.Bullets[rand.Next(0, Bullet.Bullets.Count)];
+            Bullet extrabullet = new Bullet(imgbullet.Width, imgbullet.Height, imgbullet, 10);
+            extrabullet.Left = rand.Next(0, pnl_Play.Width - extrabullet.Width);
+            extrabullet.Top = 0;
+
+            this.extrabullets.Add(extrabullet);
+            this.pnl_Play.Controls.Add(extrabullet);
         }
         private void initialEgg()
         {
@@ -221,11 +253,25 @@ namespace GameBanGa
         {
             if (this.lives <= 0) return false;
 
-            this.pnl_Play.Controls.Remove(hearts[lives - 1]);
-            this.hearts.RemoveAt(lives - 1);
+            this.hearts[lives - 1].Image = Properties.Resources.heartDead;
             this.lives--;
 
             return lives > 0;
+        }
+        private bool removeExtraHeart(int i, bool istaked)
+        {
+            if (i < 0 || i >= this.extrahearts.Count) return false;
+
+            if (istaked && lives < 3)
+            {
+                ++this.lives;
+                hearts[lives - 1].Image = Properties.Resources.heartLive;
+
+            }
+            this.pnl_Play.Controls.Remove(extrahearts[i]);
+            this.extrahearts.RemoveAt(i);
+
+            return true;
         }
         private bool removeBullet(int i)
         {
@@ -233,6 +279,16 @@ namespace GameBanGa
 
             this.pnl_Play.Controls.Remove(bullets[i]);
             this.bullets.RemoveAt(i);
+
+            return true;
+        }
+        private bool removeExtraBullet(int i, bool istaked)
+        {
+            if (i < 0 || i >= this.extrabullets.Count) return false;
+
+            if (istaked) this.typebullet = extrabullets[i].Image as Bitmap;
+            this.pnl_Play.Controls.Remove(extrabullets[i]);
+            this.extrabullets.RemoveAt(i);
 
             return true;
         }
@@ -269,16 +325,20 @@ namespace GameBanGa
             switch (e.KeyCode)
             {
                 case Keys.Left:
-                    ship.Left -= 10;
+                    if(ship.Left - 20 > 0) 
+                        ship.Left -= 20;
                     break;
                 case Keys.Right:
-                    ship.Left += 10;
+                    if (ship.Left + 20 + ship.Width < pnl_Play.Width)
+                        ship.Left += 20;
                     break;
                 case Keys.Down:
-                    ship.Top += 10;
+                    if (ship.Top + 20 + ship.Height < pnl_Play.Height)
+                        ship.Top += 20;
                     break;
                 case Keys.Up:
-                    ship.Top -= 10;
+                    if(ship.Top - 20 > 0)
+                        ship.Top -= 20;
                     break;
                 case Keys.Space:
                     initialBullet();
@@ -303,11 +363,15 @@ namespace GameBanGa
                         {
                             chickenDie(x, y);
                             removed = removeBullet(i);
+                            --i;
                         }
                     }
 
                 if(!removed && this.bullets[i].Top < 0)
+                {
                     removed = removeBullet(i);
+                    --i;
+                }
             }
 
         }
@@ -357,13 +421,14 @@ namespace GameBanGa
                         chickenDie(x, y);
                     }
                 }
+
             if (!chicken_live)
             {
                 if (this.level == 1) initialChicken(2);
                 else endGame(true);
             }
         }
-        private void tme_Eggs_Tick(object sender, EventArgs e)
+        private void tmr_Eggs_Tick(object sender, EventArgs e)
         {
             Random rand = new Random();
             if (rand.Next(100) < 10) initialEgg();
@@ -380,7 +445,6 @@ namespace GameBanGa
                     break;
                 }
 
-                //Debug.WriteLine(eggs[i].Top + " " + (this.Height) + " " + (eggs[i].Height));
                 if (eggs[i].Top >= this.Height - (eggs[i].Height + 50))
                 {
                     eggs[i].eggSpeed = 0;
@@ -403,6 +467,40 @@ namespace GameBanGa
             tmr_WaitRevival.Stop();
 
         }
+        private void tmr_ExtraHearts_Tick(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            if (this.extrahearts.Count < 3 && rand.Next(0, 10000) % 67 == 0) 
+                initialExtraHeart();
+            for (int  i = 0; i < this.extrahearts.Count; ++i)
+            {
+                extrahearts[i].Top += extrahearts[i].heartSpeed;
+                if (extrahearts[i].Bounds.IntersectsWith(ship.Bounds))
+                    removeExtraHeart(i, true);
+                else if (extrahearts[i].Top >= this.Height - (extrahearts[i].Height + 50))
+                {
+                    extrahearts[i].heartSpeed = 0;
+                    removeExtraHeart(i, false);
+                }
+            }
+        }
+        private void tmr_ExtraBullets_Tick(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            if (this.extrabullets.Count < 2 && rand.Next(0, 10000) % 67 == 0)
+                initialExtraBullet();
+            for (int i = 0; i < this.extrabullets.Count; ++i)
+            {
+                extrabullets[i].Top += extrabullets[i].bulletSpeed;
+                if (extrabullets[i].Bounds.IntersectsWith(ship.Bounds))
+                    removeExtraBullet(i, true);
+                else if (extrabullets[i].Top >= this.Height - (extrabullets[i].Height + 50))
+                {
+                    extrabullets[i].bulletSpeed = 0;
+                    removeExtraBullet(i, false);
+                }
+            }
+        }
         private void endGame(bool isWin)
         {
             initialUI_EndGame(isWin);
@@ -424,5 +522,7 @@ namespace GameBanGa
         {
             initialUI_Menu();
         }
+
+        
     }
 }
