@@ -17,6 +17,7 @@ namespace GameBanGa
         private int cols;
         private bool scintillate;
         private int score;
+        private int level;
 
         public GUI_GAME()
         {
@@ -77,9 +78,8 @@ namespace GameBanGa
         //Khoi tao cac doi tuong trong game
         private void initial()
         {
-            this.hihi = 0;
             initialShip();
-            initial_superChicken(2, 6);
+            initialChicken(1);
             initialScore();
         }
         private void initialShip()
@@ -357,7 +357,11 @@ namespace GameBanGa
                         chickenDie(x, y);
                     }
                 }
-            if (!chicken_live) endGame(true);
+            if (!chicken_live)
+            {
+                if (this.level == 1) initialChicken(2);
+                else endGame(true);
+            }
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
