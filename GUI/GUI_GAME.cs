@@ -28,6 +28,8 @@ namespace GameBanGa
         private void initialUI_Menu()
         {
             this.SuspendLayout();
+            if (this.Controls.Contains(pnl_EndGame))
+                this.Controls.Remove(pnl_EndGame);
             this.Controls.Add(pnl_Menu);
             this.ResumeLayout(false);
         }
@@ -46,25 +48,29 @@ namespace GameBanGa
             this.tmr_Chickens.Enabled = true;
             this.tmr_Eggs.Enabled = true;
         }
-        private void initialUI_EndGame()
+        private void initialUI_EndGame(bool isWin)
         {
-            this.pnl_EndGame.SuspendLayout();
-            this.Controls.Remove(pnl_Play);
-            this.lbl_ScoreEndGame.Text = "Điểm của bạn là: " + this.score.ToString();
+            this.SuspendLayout();
+            this.Controls.Remove(this.pnl_Play);
             this.Controls.Add(pnl_EndGame);
+            this.ResumeLayout(false);
+
+            this.pnl_EndGame.SuspendLayout();
+            if(isWin) this.pnl_EndGame.BackgroundImage = Properties.Resources.lose;
+            else this.pnl_EndGame.BackgroundImage = Properties.Resources.win;
+            this.pnl_EndGame.BackgroundImageLayout = ImageLayout.Center;
+            this.lbl_ScoreEndGame.Text = "Điểm của bạn là: " + this.score.ToString();
             this.pnl_EndGame.ResumeLayout(false);
-        }
-        private void initialUI_WinGame()
-        {
-            this.pnl_WinGame.SuspendLayout();
-            this.Controls.Remove(pnl_Play);
-            this.lbl_ScoreWinGame.Text = "Điểm của bạn là: " + this.score.ToString();
-            this.Controls.Add(pnl_WinGame);
-            this.pnl_WinGame.ResumeLayout(false);
+
+            this.tmr_Bullets.Enabled = false;
+            this.tmr_Chickens.Enabled = false;
+            this.tmr_Eggs.Enabled = false;
+            this.tmr_Revival.Enabled = false;
+            this.tmr_WaitRevival.Enabled = false;   
         }
 
-    //Khoi tao cac doi tuong trong game
-    private void initial()
+        //Khoi tao cac doi tuong trong game
+        private void initial()
         {
 
             initialShip();
@@ -118,7 +124,7 @@ namespace GameBanGa
                 {
                     Chicken chicken = new Chicken(70, 50, Properties.Resources.chickenGreen, 10, 0, 3);
                     chicken.Left = x *70 ; //khoang cach theo chieu x giua cac con ga la 30
-                    chicken.Top = (y) * 50 + chicken.Height ; //khoang cach theo chieu y cua cac con la 30
+                    chicken.Top = y * 50 + chicken.Height ; //khoang cach theo chieu y cua cac con la 30
 
                     this.chickens[y, x] = chicken;
                     this.pnl_Play.Controls.Add(chicken);
@@ -181,7 +187,7 @@ namespace GameBanGa
             if (tmr_WaitRevival.Enabled) return false;
 
             changePoint(-3);
-            if (!decreaseHeart()) endGame();
+            if (!decreaseHeart()) endGame(false);
 
             tmr_WaitRevival.Start();
             tmr_Revival.Start();
@@ -230,12 +236,11 @@ namespace GameBanGa
         }
         private bool changePoint(int i)
         {
-            if (this.lives <= 0) return false;
             if (this.score + 10 * i < 0)
             {
                 this.score = 0;
                 this.lbl_ScorePlay.Text = "Điểm: " + this.score.ToString();
-                return false;
+                return true;
             }
 
             this.score += 10 * i;
@@ -273,30 +278,25 @@ namespace GameBanGa
         }
         private void tmr_Bullets_Tick(object sender, EventArgs e)
         {
-            bool removed = false;
+            if (this.bullets.Count == 0) return;
             for (int i = 0; i < this.bullets.Count; ++i)
             {
+                bool removed = false;
                 this.bullets[i].Top -= this.bullets[i].bulletSpeed;
 
-                for (int x = 0; x < this.cols; ++x)
-                    for (int y = this.rows - 1; y >= 0; --y)
+                for (int x = 0; x < this.cols && !removed; ++x)
+                    for (int y = this.rows - 1; y >= 0 && !removed; --y)
                     {
-                        //Debug.WriteLine(i);
                         if (chickens[y, x] == null) continue;
                         if (chickens[y, x].Bounds.IntersectsWith(bullets[i].Bounds))
                         {
                             chickenDie(x, y);
                             removed = removeBullet(i);
-
-                            if (this.bullets.Count == 0) return;
                         }
                     }
 
-                if (this.bullets[i].Top < 0)
+                if(!removed && this.bullets[i].Top < 0)
                     removed = removeBullet(i);
-
-                if (this.bullets.Count == 0) return;
-                if (removed) --i;
             }
 
         }
@@ -345,7 +345,7 @@ namespace GameBanGa
                         chickenDie(x, y);
                     }
                 }
-            if (chicken_live == false) winGame();
+            if (chicken_live == false) endGame(true);
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
@@ -377,10 +377,7 @@ namespace GameBanGa
         private void tmr_Revival_Tick(object sender, EventArgs e)
         {
             scintillate = !scintillate;
-            if (scintillate)
-            {
-                this.ship.Image = Properties.Resources.shipDead;
-            }
+            if (scintillate) this.ship.Image = Properties.Resources.shipDead;
             else this.ship.Image = Properties.Resources.shipLive;
         }
         private void tmr_WaitRevival_Tick(object sender, EventArgs e)
@@ -390,15 +387,9 @@ namespace GameBanGa
             tmr_WaitRevival.Stop();
 
         }
-        private void endGame()
+        private void endGame(bool isWin)
         {
-
-            initialUI_EndGame();
-        }
-        private void winGame()
-        {
-
-            initialUI_WinGame();
+            initialUI_EndGame(isWin);
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
@@ -408,6 +399,15 @@ namespace GameBanGa
         private void btn_Exit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btn_Replay_Click(object sender, EventArgs e)
+        {
+            this.initialUI_Play();
+        }
+        private void btn_Menu_Click(object sender, EventArgs e)
+        {
+            initialUI_Play();
         }
     }
 }
