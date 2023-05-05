@@ -28,19 +28,23 @@ namespace GameBanGa
         private void initialUI_Menu()
         {
             this.SuspendLayout();
-            if (this.Controls.Contains(pnl_EndGame))
-                this.Controls.Remove(pnl_EndGame);
-            this.Controls.Add(pnl_Menu);
+            if (this.Controls.Contains(this.pnl_EndGame))
+                this.Controls.Remove(this.pnl_EndGame);
+            this.Controls.Add(this.pnl_Menu);
             this.ResumeLayout(false);
         }
         private void initialUI_Play()
         {
             this.SuspendLayout();
-            this.Controls.Remove(this.pnl_Menu);
-            this.Controls.Add(pnl_Play);
+            if (this.Controls.Contains(this.pnl_Menu)) 
+                    this.Controls.Remove(this.pnl_Menu);
+            if (this.Controls.Contains(this.pnl_EndGame))
+                this.Controls.Remove(this.pnl_EndGame);
+            this.Controls.Add(this.pnl_Play);
             this.ResumeLayout(false);
 
             this.pnl_Play.SuspendLayout();
+            this.pnl_Play.Controls.Add(this.lbl_ScorePlay);
             this.initial();
             this.pnl_Play.ResumeLayout(false);
 
@@ -51,13 +55,14 @@ namespace GameBanGa
         private void initialUI_EndGame(bool isWin)
         {
             this.SuspendLayout();
+            this.pnl_Play.Controls.Clear();
             this.Controls.Remove(this.pnl_Play);
-            this.Controls.Add(pnl_EndGame);
+            this.Controls.Add(this.pnl_EndGame);
             this.ResumeLayout(false);
 
             this.pnl_EndGame.SuspendLayout();
-            if(isWin) this.pnl_EndGame.BackgroundImage = Properties.Resources.lose;
-            else this.pnl_EndGame.BackgroundImage = Properties.Resources.win;
+            if(isWin) this.pnl_EndGame.BackgroundImage = Properties.Resources.win;
+            else this.pnl_EndGame.BackgroundImage = Properties.Resources.lose;
             this.pnl_EndGame.BackgroundImageLayout = ImageLayout.Center;
             this.lbl_ScoreEndGame.Text = "Điểm của bạn là: " + this.score.ToString();
             this.pnl_EndGame.ResumeLayout(false);
@@ -147,7 +152,7 @@ namespace GameBanGa
         }
         private void initialBullet()
         {
-            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 5);
+            Bullet bullet = new Bullet(5, 15, Properties.Resources.b1, 10);
             bullet.Left = this.ship.Left + this.ship.Width / 2 - bullet.Width / 2;
             bullet.Top = this.ship.Top - bullet.Height;
 
@@ -329,13 +334,14 @@ namespace GameBanGa
                 (this.chickens[y1, x1].Left < 0 ||
                 this.chickens[y2, x2].Left + this.chickens[y2, x2].Width > this.pnl_Play.Width))
                 revDirect = -1;
+
             bool chicken_live = false;
             for (int x = 0; x < this.cols; ++x)
                 for (int y = this.rows - 1; y >= 0; --y)
                 {
                     if (chickens[y, x] == null) continue;
+                    else chicken_live = true;
                     chickens[y, x].nextFrame();
-                    chicken_live = true;
                     chickens[y, x].chickenSpeed *= revDirect;
                     chickens[y, x].Left += chickens[y, x].chickenSpeed;
 
@@ -345,7 +351,7 @@ namespace GameBanGa
                         chickenDie(x, y);
                     }
                 }
-            if (chicken_live == false) endGame(true);
+            if (!chicken_live) endGame(true);
         }
         private void tme_Eggs_Tick(object sender, EventArgs e)
         {
@@ -403,11 +409,11 @@ namespace GameBanGa
 
         private void btn_Replay_Click(object sender, EventArgs e)
         {
-            this.initialUI_Play();
+            initialUI_Play();
         }
         private void btn_Menu_Click(object sender, EventArgs e)
         {
-            initialUI_Play();
+            initialUI_Menu();
         }
     }
 }

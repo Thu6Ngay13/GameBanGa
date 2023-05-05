@@ -53,7 +53,6 @@ namespace GameBanGa
             // pnl_Play
             // 
             this.pnl_Play.BackColor = System.Drawing.SystemColors.Highlight;
-            this.pnl_Play.Controls.Add(this.lbl_ScorePlay);
             this.pnl_Play.Location = new System.Drawing.Point(1, 1);
             this.pnl_Play.Name = "pnl_Play";
             this.pnl_Play.Size = new System.Drawing.Size(500, 700);
@@ -146,7 +145,7 @@ namespace GameBanGa
             // 
             // btn_Exit
             // 
-            this.btn_Exit.Location = new System.Drawing.Point(153, 331);
+            this.btn_Exit.Location = new System.Drawing.Point(153, 316);
             this.btn_Exit.Name = "btn_Exit";
             this.btn_Exit.Size = new System.Drawing.Size(200, 50);
             this.btn_Exit.TabIndex = 1;
@@ -170,7 +169,7 @@ namespace GameBanGa
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(500, 700);
-            //this.Controls.Add(this.pnl_EndGame);
+            //this.Controls.Add(this.pnl_Menu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "GUI_GAME";
             this.Text = "Game Bắn Gà";
@@ -183,8 +182,8 @@ namespace GameBanGa
 
         #endregion
 
-        private System.Windows.Forms.Label lbl_ScoreEndGame;
         private System.Windows.Forms.Label lbl_ScorePlay;
+        private System.Windows.Forms.Label lbl_ScoreEndGame;
         private System.Windows.Forms.Timer tmr_Bullets;
         private System.Windows.Forms.Timer tmr_Chickens;
         private System.Windows.Forms.Timer tmr_Eggs;
